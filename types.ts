@@ -13,7 +13,7 @@ export interface SignatureColor {
   hex: string;
 }
 
-export type TabMode = 'type' | 'draw';
+export type TabMode = 'type' | 'draw' | 'scan' | 'sign-pdf';
 
 export type PageView = 'home' | 'about' | 'contact' | 'privacy' | 'terms';
 
@@ -30,7 +30,7 @@ export interface TypeSignatureConfig {
 
 export interface SignatureHistoryItem {
     id: string;
-    type: 'type' | 'draw';
+    type: TabMode;
     dataUrl: string;
     timestamp: number;
     label: string; // "John Doe" or "Sketch"
@@ -49,4 +49,13 @@ export interface Stroke {
   isEraser: boolean;
   baseWidth: number;
   smoothing: number;
+}
+
+export interface EmailSignatureConfig {
+    name: string;
+    jobTitle: string;
+    company: string;
+    phone: string;
+    email: string;
+    website: string;
 }

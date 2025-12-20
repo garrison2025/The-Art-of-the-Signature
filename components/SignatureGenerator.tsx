@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Type, PenTool as DrawIcon, RefreshCw, Plus } from 'lucide-react';
+import { Type, PenTool as DrawIcon, RefreshCw, Plus, ScanLine, FileSignature } from 'lucide-react';
 import TypeMode from './TypeMode';
 import DrawMode from './DrawMode';
+import ScanMode from './ScanMode';
+import SignDocumentMode from './SignDocumentMode';
 import ContextPreviewModal from './ContextPreviewModal';
+import EmailSignatureModal from './EmailSignatureModal';
 import SignatureHistory from './SignatureHistory';
 import { TabMode, SignatureHistoryItem } from '../types';
 import { SIGNATURE_COLORS } from '../constants';
@@ -16,16 +19,25 @@ const SignatureGenerator: React.FC = () => {
   // History State
   const [history, setHistory] = useState<SignatureHistoryItem[]>([]);
   
-  // Preview State
+  // Preview States
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [previewDataUrl, setPreviewDataUrl] = useState('');
+
+  // Track the "current" generated signature for PDF signing
+  const [currentGeneratedSignature, setCurrentGeneratedSignature] = useState<string | null>(null);
 
   // Load history on mount
   useEffect(() => {
       const saved = localStorage.getItem('signatureHistory');
       if (saved) {
           try {
-              setHistory(JSON.parse(saved));
+              const parsed = JSON.parse(saved);
+              setHistory(parsed);
+              // Auto-select most recent as current if available
+              if (parsed.length > 0) {
+                  setCurrentGeneratedSignature(parsed[0].dataUrl);
+              }
           } catch (e) {
               console.error("Failed to load history");
           }
@@ -36,6 +48,9 @@ const SignatureGenerator: React.FC = () => {
       const newHistory = [newItem, ...history].slice(0, 10); // Keep last 10
       setHistory(newHistory);
       localStorage.setItem('signatureHistory', JSON.stringify(newHistory));
+      
+      // Update current signature for PDF signing
+      setCurrentGeneratedSignature(newItem.dataUrl);
   };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,19 +70,25 @@ const SignatureGenerator: React.FC = () => {
       setIsPreviewOpen(true);
   };
 
+  const handleOpenEmailBuilder = (dataUrl: string) => {
+      setPreviewDataUrl(dataUrl);
+      setIsEmailModalOpen(true);
+  };
+
   const handleSaveToHistory = (dataUrl: string) => {
       saveHistory({
           id: Date.now().toString(),
           type: activeTab,
           dataUrl,
           timestamp: Date.now(),
-          label: activeTab === 'type' ? (inputText || 'Typed') : 'Drawn'
+          label: activeTab === 'type' ? (inputText || 'Typed') : (activeTab === 'scan' ? 'Scanned' : 'Drawn')
       });
   };
 
   const handleClearHistory = () => {
       setHistory([]);
       localStorage.removeItem('signatureHistory');
+      setCurrentGeneratedSignature(null);
   };
 
   const isCustomColor = !SIGNATURE_COLORS.some(c => c.hex === selectedColor);
@@ -77,10 +98,10 @@ const SignatureGenerator: React.FC = () => {
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 overflow-hidden transition-colors duration-300">
         
         {/* Tabs */}
-        <div className="flex border-b border-gray-100 dark:border-slate-800">
+        <div id="generator-tabs" className="flex border-b border-gray-100 dark:border-slate-800 overflow-x-auto">
           <button
             onClick={() => setActiveTab('type')}
-            className={`flex-1 py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
+            className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
               ${activeTab === 'type' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
           >
             <Type size={18} />
@@ -91,7 +112,7 @@ const SignatureGenerator: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('draw')}
-            className={`flex-1 py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
+            className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
               ${activeTab === 'draw' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
           >
             <DrawIcon size={18} />
@@ -100,50 +121,74 @@ const SignatureGenerator: React.FC = () => {
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 dark:bg-white"></span>
             )}
           </button>
+          <button
+            onClick={() => setActiveTab('scan')}
+            className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
+              ${activeTab === 'scan' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+          >
+            <ScanLine size={18} />
+            Scan
+            {activeTab === 'scan' && (
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 dark:bg-white"></span>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('sign-pdf')}
+            className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative bg-indigo-50/50 dark:bg-indigo-900/10
+              ${activeTab === 'sign-pdf' ? 'text-indigo-600 dark:text-indigo-300' : 'text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-300'}`}
+          >
+            <FileSignature size={18} />
+            Sign PDF
+            {activeTab === 'sign-pdf' && (
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-600 dark:bg-indigo-400"></span>
+            )}
+          </button>
         </div>
 
         {/* Controls Area */}
+        {activeTab !== 'sign-pdf' && (
         <div className="p-10 pb-2 bg-white dark:bg-slate-900 transition-colors duration-300">
           
           {/* Color Picker */}
-          <div className="flex justify-center mb-10">
-            <div className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-1.5 rounded-full shadow-sm transition-colors">
-                {SIGNATURE_COLORS.map((color) => (
-                <button
-                    key={color.name}
-                    onClick={() => setSelectedColor(color.hex)}
-                    className={`w-8 h-8 rounded-full transition-transform hover:scale-110 focus:outline-none ring-2 ring-offset-2 dark:ring-offset-slate-800
-                    ${selectedColor === color.hex ? 'ring-slate-900 dark:ring-white scale-105' : 'ring-transparent hover:ring-gray-200 dark:hover:ring-slate-600'}`}
-                    style={{ backgroundColor: color.hex }}
-                    title={color.name}
-                />
-                ))}
-                
-                {/* Custom Color Button */}
-                <div className="relative">
-                    <input 
-                        ref={colorInputRef}
-                        type="color" 
-                        className="absolute inset-0 opacity-0 w-0 h-0"
-                        onChange={handleColorInputChange}
-                        value={selectedColor}
+          {activeTab !== 'scan' && (
+            <div className="flex justify-center mb-10" id="color-picker">
+                <div className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-1.5 rounded-full shadow-sm transition-colors">
+                    {SIGNATURE_COLORS.map((color) => (
+                    <button
+                        key={color.name}
+                        onClick={() => setSelectedColor(color.hex)}
+                        className={`w-8 h-8 rounded-full transition-transform hover:scale-110 focus:outline-none ring-2 ring-offset-2 dark:ring-offset-slate-800
+                        ${selectedColor === color.hex ? 'ring-slate-900 dark:ring-white scale-105' : 'ring-transparent hover:ring-gray-200 dark:hover:ring-slate-600'}`}
+                        style={{ backgroundColor: color.hex }}
+                        title={color.name}
                     />
-                    <button 
-                        onClick={handleCustomColorClick}
-                        className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm hover:opacity-90 transition-all focus:outline-none ring-2 ring-offset-2 dark:ring-offset-slate-800
-                        ${isCustomColor ? 'ring-slate-900 dark:ring-white scale-105' : 'ring-transparent hover:ring-gray-200 dark:hover:ring-slate-600 bg-gradient-to-br from-rose-400 to-orange-400'}`}
-                        style={isCustomColor ? { backgroundColor: selectedColor } : {}}
-                        title="Custom Color"
-                    >
-                        {isCustomColor ? null : <Plus size={16} className="text-white" />}
-                    </button>
+                    ))}
+                    
+                    <div className="relative">
+                        <input 
+                            ref={colorInputRef}
+                            type="color" 
+                            className="absolute inset-0 opacity-0 w-0 h-0"
+                            onChange={handleColorInputChange}
+                            value={selectedColor}
+                        />
+                        <button 
+                            onClick={handleCustomColorClick}
+                            className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm hover:opacity-90 transition-all focus:outline-none ring-2 ring-offset-2 dark:ring-offset-slate-800
+                            ${isCustomColor ? 'ring-slate-900 dark:ring-white scale-105' : 'ring-transparent hover:ring-gray-200 dark:hover:ring-slate-600 bg-gradient-to-br from-rose-400 to-orange-400'}`}
+                            style={isCustomColor ? { backgroundColor: selectedColor } : {}}
+                            title="Custom Color"
+                        >
+                            {isCustomColor ? null : <Plus size={16} className="text-white" />}
+                        </button>
+                    </div>
                 </div>
             </div>
-          </div>
+          )}
 
           {/* Type Input Area */}
           {activeTab === 'type' && (
-            <div className="max-w-2xl mx-auto mb-12">
+            <div className="max-w-2xl mx-auto mb-12" id="input-area">
               <div className="relative group">
                 <input
                   type="text"
@@ -153,9 +198,7 @@ const SignatureGenerator: React.FC = () => {
                   className="w-full text-center text-5xl md:text-6xl font-serif text-slate-800 dark:text-white py-6 focus:outline-none bg-transparent placeholder-gray-200 dark:placeholder-slate-700 transition-colors font-medium"
                   autoFocus
                 />
-                {/* Underline */}
                 <div className="h-px w-full bg-gray-100 dark:bg-slate-800 mt-2"></div>
-                
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-30 hover:opacity-100 transition-opacity cursor-pointer">
                     <RefreshCw size={20} className="text-slate-400 dark:text-slate-500" onClick={() => setInputText('')} />
                 </div>
@@ -163,25 +206,43 @@ const SignatureGenerator: React.FC = () => {
             </div>
           )}
         </div>
+        )}
 
-        {/* Content Area (Grid or Canvas) */}
-        <div className={`p-8 min-h-[400px] transition-colors duration-300 ${activeTab === 'type' ? 'bg-slate-50/50 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'}`}>
-          {activeTab === 'type' ? (
+        {/* Content Area */}
+        <div id="style-controls" className={`p-8 min-h-[400px] transition-colors duration-300 ${activeTab === 'type' ? 'bg-slate-50/50 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'}`}>
+          {activeTab === 'type' && (
             <TypeMode 
                 text={inputText} 
                 color={selectedColor} 
                 onPreview={handlePreview}
                 onSaveToHistory={handleSaveToHistory}
+                onOpenEmailBuilder={handleOpenEmailBuilder}
             />
-          ) : (
+          )}
+          {activeTab === 'draw' && (
             <DrawMode 
                 color={selectedColor} 
                 onPreview={handlePreview}
                 onSaveToHistory={handleSaveToHistory}
+                onOpenEmailBuilder={handleOpenEmailBuilder}
+            />
+          )}
+          {activeTab === 'scan' && (
+            <ScanMode 
+                onPreview={handlePreview}
+                onSaveToHistory={handleSaveToHistory}
+                onOpenEmailBuilder={handleOpenEmailBuilder}
+            />
+          )}
+           {activeTab === 'sign-pdf' && (
+            <SignDocumentMode 
+                signatureDataUrl={currentGeneratedSignature}
             />
           )}
 
-          <SignatureHistory history={history} onClear={handleClearHistory} />
+          <div id="history-section">
+             <SignatureHistory history={history} onClear={handleClearHistory} />
+          </div>
         </div>
 
       </div>
@@ -189,6 +250,12 @@ const SignatureGenerator: React.FC = () => {
       <ContextPreviewModal 
         isOpen={isPreviewOpen} 
         onClose={() => setIsPreviewOpen(false)} 
+        signatureDataUrl={previewDataUrl}
+      />
+      
+      <EmailSignatureModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
         signatureDataUrl={previewDataUrl}
       />
     </div>

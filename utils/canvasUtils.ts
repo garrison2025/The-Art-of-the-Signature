@@ -215,3 +215,85 @@ export const downloadDataUrl = (dataUrl: string, filename: string) => {
   link.click();
   document.body.removeChild(link);
 };
+
+/**
+ * Process a scanned image: Binarize, remove background, optimize
+ */
+export const processScannedImage = async (
+    file: File, 
+    threshold: number = 180, 
+    smoothing: boolean = true
+): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            // Limit max dimensions to avoid massive processing
+            const maxDim = 1500;
+            let width = img.width;
+            let height = img.height;
+            
+            if (width > maxDim || height > maxDim) {
+                const ratio = Math.min(maxDim / width, maxDim / height);
+                width *= ratio;
+                height *= ratio;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                URL.revokeObjectURL(url);
+                reject('Canvas context not available');
+                return;
+            }
+            
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Image Processing
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const data = imageData.data;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                
+                // Calculate luminance (perceived brightness)
+                const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+                
+                if (luminance > threshold) {
+                    // White background -> Make Transparent
+                    data[i + 3] = 0; 
+                } else {
+                    // Dark ink -> Make Solid Black (or preserve color if we wanted)
+                    // Let's make it solid black/dark grey for better digital quality
+                    data[i] = 40;
+                    data[i+1] = 40;
+                    data[i+2] = 40;
+                    // Boost alpha of semi-transparent pixels if smoothing is off, 
+                    // but for smoothing we might keep some anti-aliasing.
+                    // Simple binarization:
+                    if (data[i+3] > 0) data[i+3] = 255; 
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+            
+            let finalCanvas = trimCanvas(canvas);
+            
+            resolve(finalCanvas.toDataURL('image/png'));
+            URL.revokeObjectURL(url);
+        };
+        
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject('Failed to load image');
+        };
+        
+        img.src = url;
+    });
+};

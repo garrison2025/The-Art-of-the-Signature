@@ -2,8 +2,6 @@ import { FontOption, TypeSignatureConfig, Stroke } from '../types';
 
 /**
  * Generates an SVG string for Type Mode
- * Note: This embeds the font family. For the SVG to work perfectly offline, 
- * the user needs the font installed, or we rely on the @import rule working if they have internet.
  */
 export const generateTypeSVG = (font: FontOption, config: TypeSignatureConfig): string => {
     const width = 800;
@@ -49,16 +47,10 @@ export const generateDrawSVG = (strokes: Stroke[], width: number, height: number
 
     strokes.forEach(stroke => {
         if (stroke.points.length < 2) return;
-        if (stroke.isEraser) return; // Eraser not supported in simple SVG export yet
+        if (stroke.isEraser) return; 
 
         const d = stroke.points.reduce((acc, point, i, a) => {
             if (i === 0) return `M ${point.x.toFixed(2)} ${point.y.toFixed(2)}`;
-            
-            // Simple line connection for now, or we can do quadratic if we stored control points
-            // Re-implementing the quadratic logic from canvas:
-            // Since we don't store the exact calculated curves, we approximate with lineTo for SVG 
-            // OR we calculate the midpoints again. Let's do quadratic for smoothness.
-            
             if (i < a.length - 1) {
                 const p1 = point;
                 const p2 = a[i+1];
@@ -70,13 +62,85 @@ export const generateDrawSVG = (strokes: Stroke[], width: number, height: number
             }
         }, '');
 
-        // Average width of the stroke for SVG (SVG 1.1 doesn't support variable width paths easily)
-        // We use the baseWidth. 
         paths += `<path d="${d}" stroke="${stroke.color}" stroke-width="${stroke.baseWidth}" fill="none" stroke-linecap="round" stroke-linejoin="round" />`;
     });
 
     return `
 <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  ${paths}
+</svg>`.trim();
+};
+
+/**
+ * Generates an ANIMATED SVG string for Draw Mode
+ * Uses CSS animation on stroke-dasharray
+ */
+export const generateAnimatedSVG = (strokes: Stroke[], width: number, height: number): string => {
+    let paths = '';
+    let totalDelay = 0;
+    const animationSpeed = 2; // Higher is slower
+
+    strokes.forEach((stroke, index) => {
+        if (stroke.points.length < 2) return;
+        if (stroke.isEraser) return; 
+
+        // Calculate approximate path length to set stroke-dasharray
+        let pathLength = 0;
+        for(let i=0; i < stroke.points.length - 1; i++) {
+            const p1 = stroke.points[i];
+            const p2 = stroke.points[i+1];
+            pathLength += Math.hypot(p2.x - p1.x, p2.y - p1.y);
+        }
+        
+        // Add buffer to length to ensure it hides fully
+        pathLength = Math.ceil(pathLength + 10);
+        
+        // Calculate duration based on length (uniform speed)
+        const duration = Math.max(0.3, pathLength / 200 * animationSpeed); 
+
+        const d = stroke.points.reduce((acc, point, i, a) => {
+            if (i === 0) return `M ${point.x.toFixed(2)} ${point.y.toFixed(2)}`;
+            if (i < a.length - 1) {
+                const p1 = point;
+                const p2 = a[i+1];
+                const midX = (p1.x + p2.x) / 2;
+                const midY = (p1.y + p2.y) / 2;
+                return `${acc} Q ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} ${midX.toFixed(2)} ${midY.toFixed(2)}`;
+            } else {
+                 return `${acc} L ${point.x.toFixed(2)} ${point.y.toFixed(2)}`;
+            }
+        }, '');
+
+        paths += `
+        <path 
+            d="${d}" 
+            stroke="${stroke.color}" 
+            stroke-width="${stroke.baseWidth}" 
+            fill="none" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+            class="path-anim"
+            style="--length: ${pathLength}; --delay: ${totalDelay}s; --duration: ${duration}s;"
+        />`;
+
+        totalDelay += duration;
+    });
+
+    return `
+<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  <style>
+    .path-anim {
+      stroke-dasharray: var(--length);
+      stroke-dashoffset: var(--length);
+      animation: dash var(--duration) linear forwards;
+      animation-delay: var(--delay);
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+  </style>
   ${paths}
 </svg>`.trim();
 };

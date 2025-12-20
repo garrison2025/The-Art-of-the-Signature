@@ -8,6 +8,7 @@ import About from './components/pages/About';
 import Contact from './components/pages/Contact';
 import Privacy from './components/pages/Privacy';
 import Terms from './components/pages/Terms';
+import OnboardingTour from './components/OnboardingTour';
 import { Star } from 'lucide-react';
 import { PageView } from './types';
 
@@ -137,6 +138,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-slate-200 dark:selection:bg-slate-700 flex flex-col justify-between transition-colors duration-300">
+      <OnboardingTour />
       <Header onNavigate={handleNavigate} isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       
       <main className="flex-grow">
