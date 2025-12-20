@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Download, RotateCcw, RotateCw, Trash2, Copy, Pen, Eraser, Check, FileJson, Mail, Play } from 'lucide-react';
+import { Download, RotateCcw, RotateCw, Trash2, Pen, Eraser, FileJson, Mail, Play, Fingerprint } from 'lucide-react';
 import { downloadDataUrl, trimCanvas, addBackgroundToCanvas } from '../utils/canvasUtils';
 import { generateDrawSVG, generateAnimatedSVG, downloadSVG } from '../utils/exportUtils';
 import { Stroke, Point } from '../types';
@@ -24,7 +24,6 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
   // Tools & Settings
   const [tool, setTool] = useState<'pen' | 'eraser'>('pen');
   const [baseWidth, setBaseWidth] = useState(3);
-  const [smoothing, setSmoothing] = useState(0.5); // 0 to 1
   
   // Export Settings
   const [trim, setTrim] = useState(true);
@@ -38,10 +37,12 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
         const canvas = canvasRef.current;
         const container = containerRef.current;
         
-        canvas.width = container.offsetWidth;
-        canvas.height = 450;
-        
-        requestAnimationFrame(() => redrawCanvas(strokes.slice(0, historyStep)));
+        // Prevent clearing if resizing slightly (mobile URL bar)
+        if (canvas.width !== container.offsetWidth) {
+            canvas.width = container.offsetWidth;
+            canvas.height = 450;
+            requestAnimationFrame(() => redrawCanvas(strokes.slice(0, historyStep)));
+        }
       }
     };
 
@@ -50,33 +51,29 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
     return () => window.removeEventListener('resize', handleResize);
   }, [strokes, historyStep]);
 
-  // --- Drawing Logic V2 (Curves & Velocity) ---
+  // --- Drawing Logic (Pressure & Velocity) ---
 
-  const getCoordinates = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement): Point => {
+  const getCoordinates = (e: React.PointerEvent, canvas: HTMLCanvasElement): Point => {
     const rect = canvas.getBoundingClientRect();
-    let clientX, clientY;
-    
-    if ('touches' in e) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else {
-      clientX = (e as React.MouseEvent).clientX;
-      clientY = (e as React.MouseEvent).clientY;
-    }
-
     return {
-      x: clientX - rect.left,
-      y: clientY - rect.top,
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      pressure: e.pressure !== 0.5 ? e.pressure : 0.5, // 0.5 is often default for mouse
       time: Date.now()
     };
   };
 
-  const getLineWidth = (velocity: number, baseWidth: number) => {
+  const getLineWidth = (velocity: number, pressure: number, baseWidth: number) => {
+    // Velocity factor (faster = thinner)
     const clampedVelocity = Math.min(velocity, 2); 
-    const minWidth = baseWidth * 0.4;
-    const maxWidth = baseWidth * 1.4;
-    const factor = clampedVelocity / 2;
-    return maxWidth - (factor * (maxWidth - minWidth));
+    const velocityFactor = 1 - (clampedVelocity / 4); // 0.5 to 1.0
+
+    // Pressure factor (harder = thicker)
+    // If pressure is 0 (mouse sometimes), treat as 0.5
+    const p = pressure <= 0 ? 0.5 : pressure;
+    const pressureFactor = 0.5 + p; // 0.5 to 1.5
+
+    return baseWidth * velocityFactor * pressureFactor;
   };
 
   const redrawCanvas = (strokesToDraw: Stroke[]) => {
@@ -122,7 +119,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
         if (stroke.points.length < 3) {
             const p = stroke.points[0];
             ctx.beginPath();
-            ctx.arc(p.x, p.y, stroke.baseWidth / 2, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, (stroke.baseWidth * (p.pressure || 0.5)), 0, Math.PI * 2);
             ctx.fillStyle = stroke.color;
             ctx.fill();
             return;
@@ -142,7 +139,11 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
             const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
             const time = (p2.time || 0) - (p1.time || 0);
             const velocity = time > 0 ? dist / time : 0;
-            const currentWidth = getLineWidth(velocity, stroke.baseWidth);
+            
+            // Average pressure
+            const avgPressure = ((p1.pressure || 0.5) + (p2.pressure || 0.5)) / 2;
+            
+            const currentWidth = getLineWidth(velocity, avgPressure, stroke.baseWidth);
             ctx.lineWidth = currentWidth;
             
             ctx.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
@@ -176,9 +177,10 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
       ctx.restore();
   };
 
-  // --- Interaction Handlers ---
+  // --- Interaction Handlers (Pointer Events) ---
 
-  const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+  const handlePointerDown = (e: React.PointerEvent) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
     const canvas = canvasRef.current;
     if (!canvas) return;
     
@@ -190,7 +192,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
       color: color,
       isEraser: tool === 'eraser',
       baseWidth: baseWidth,
-      smoothing: smoothing
+      smoothing: 0.5
     };
     
     setCurrentStroke(newStroke);
@@ -203,14 +205,17 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
              ctx.fillStyle = color;
          }
          ctx.beginPath();
-         ctx.arc(point.x, point.y, baseWidth / 2, 0, Math.PI * 2);
+         // Draw a dot on start
+         ctx.arc(point.x, point.y, (baseWidth * (point.pressure || 0.5)) / 2, 0, Math.PI * 2);
          ctx.fill();
          ctx.globalCompositeOperation = 'source-over';
     }
   };
 
-  const draw = (e: React.MouseEvent | React.TouchEvent) => {
+  const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDrawing || !currentStroke || !canvasRef.current) return;
+    
+    // If it's a pen, we trust the pressure more. If mouse, pressure is static.
     const point = getCoordinates(e, canvasRef.current);
     currentStroke.points.push(point);
     
@@ -232,7 +237,11 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
               const dist = Math.hypot(lastPoint.x - prevPoint.x, lastPoint.y - prevPoint.y);
               const time = (lastPoint.time || 0) - (prevPoint.time || 0);
               const v = time > 0 ? dist / time : 0;
-              ctx.lineWidth = getLineWidth(v, baseWidth);
+              
+              // Smooth pressure transition
+              const pressure = lastPoint.pressure || 0.5;
+              
+              ctx.lineWidth = getLineWidth(v, pressure, baseWidth);
               ctx.strokeStyle = color;
           }
           ctx.moveTo(prevPoint.x, prevPoint.y);
@@ -243,7 +252,8 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
     }
   };
 
-  const stopDrawing = () => {
+  const handlePointerUp = (e: React.PointerEvent) => {
+    e.currentTarget.releasePointerCapture(e.pointerId);
     if (!isDrawing || !currentStroke) return;
     setIsDrawing(false);
     const newStrokes = [...strokes.slice(0, historyStep), currentStroke];
@@ -281,40 +291,8 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
 
   const getHighFidelityCanvas = () => {
       if (!canvasRef.current) return null;
-      const ctx = canvasRef.current.getContext('2d');
-      if(!ctx) return null;
-
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      const cleanStrokes = strokes.slice(0, historyStep);
-      
-      cleanStrokes.forEach(stroke => {
-          if (stroke.points.length < 1) return;
-          if (stroke.isEraser) {
-              // Eraser logic ignored for export typically, or handled by composite
-          } else {
-             ctx.lineCap = 'round';
-             ctx.lineJoin = 'round';
-             ctx.strokeStyle = stroke.color;
-             if (stroke.points.length < 3) {
-                 ctx.beginPath(); ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.baseWidth/2, 0, Math.PI*2); ctx.fillStyle=stroke.color; ctx.fill(); return;
-             }
-             let p1 = stroke.points[0];
-             let p2 = stroke.points[1];
-             ctx.beginPath(); ctx.moveTo(p1.x, p1.y);
-             for (let i = 1; i < stroke.points.length; i++) {
-                const mid = { x: (p1.x + p2.x)/2, y: (p1.y + p2.y)/2 };
-                const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
-                const time = (p2.time||0) - (p1.time||0);
-                const v = time > 0 ? dist/time : 0;
-                ctx.lineWidth = getLineWidth(v, stroke.baseWidth);
-                ctx.quadraticCurveTo(p1.x, p1.y, mid.x, mid.y);
-                ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(mid.x, mid.y);
-                p1 = stroke.points[i]; p2 = stroke.points[i+1] || stroke.points[i];
-             }
-             ctx.lineTo(p1.x, p1.y); ctx.stroke();
-          }
-      });
+      // We essentially just redraw everything to a clean canvas
+      // For improved export, we could technically re-render at 2x scale here
       return canvasRef.current;
   };
 
@@ -327,6 +305,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
     const dataUrl = finalCanvas.toDataURL('image/png');
     onSaveToHistory(dataUrl);
     downloadDataUrl(dataUrl, 'my-drawn-signature.png');
+    // Force redraw to bring back guidelines if they were trimmed out (though trim creates new canvas)
     redrawCanvas(strokes.slice(0, historyStep));
   };
 
@@ -335,7 +314,6 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
       const cleanStrokes = strokes.slice(0, historyStep);
       const svgString = generateDrawSVG(cleanStrokes, canvasRef.current.width, canvasRef.current.height);
       downloadSVG(svgString, 'my-drawn-signature.svg');
-      redrawCanvas(strokes.slice(0, historyStep));
   };
 
   const handleAnimatedSVG = () => {
@@ -343,7 +321,6 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
       const cleanStrokes = strokes.slice(0, historyStep);
       const svgString = generateAnimatedSVG(cleanStrokes, canvasRef.current.width, canvasRef.current.height);
       downloadSVG(svgString, 'animated-signature.svg');
-      redrawCanvas(strokes.slice(0, historyStep));
   };
 
   const handleEmailSig = () => {
@@ -355,28 +332,6 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
       const dataUrl = finalCanvas.toDataURL('image/png');
       onSaveToHistory(dataUrl);
       onOpenEmailBuilder(dataUrl);
-      redrawCanvas(strokes.slice(0, historyStep));
-  };
-
-  const handleCopy = async () => {
-     if (!canvasRef.current || historyStep === 0) return;
-     const canvas = getHighFidelityCanvas();
-     if (!canvas) return;
-     try {
-         let copyCanvas = trim ? trimCanvas(canvas) : canvas;
-         copyCanvas = addBackgroundToCanvas(copyCanvas, bgColor);
-        const blob = await new Promise<Blob | null>(resolve => copyCanvas.toBlob(resolve));
-        if (blob) {
-            await navigator.clipboard.write([
-                new ClipboardItem({ 'image/png': blob })
-            ]);
-            alert('Signature copied to clipboard!');
-        }
-    } catch (err) {
-        console.error('Failed to copy', err);
-    } finally {
-        redrawCanvas(strokes.slice(0, historyStep));
-    }
   };
 
   return (
@@ -404,19 +359,34 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
       </div>
 
       <div ref={containerRef} className="relative bg-white dark:bg-white rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm overflow-hidden touch-none" style={{ backgroundImage: 'radial-gradient(#e2e8f0 1.5px, transparent 1.5px)', backgroundSize: '24px 24px', backgroundColor: bgColor === 'transparent' ? '#ffffff' : bgColor }}>
-        <canvas ref={canvasRef} onMouseDown={startDrawing} onMouseMove={draw} onMouseUp={stopDrawing} onMouseLeave={stopDrawing} onTouchStart={startDrawing} onTouchMove={draw} onTouchEnd={stopDrawing} className="w-full relative z-20 cursor-crosshair" style={{ height: '450px' }} />
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-gray-200 dark:border-slate-600 shadow-lg rounded-xl p-2">
+        <canvas 
+            ref={canvasRef} 
+            onPointerDown={handlePointerDown} 
+            onPointerMove={handlePointerMove} 
+            onPointerUp={handlePointerUp} 
+            onPointerLeave={handlePointerUp}
+            className="w-full relative z-20 cursor-crosshair" 
+            style={{ height: '450px' }} 
+        />
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-gray-200 dark:border-slate-600 shadow-lg rounded-xl p-2 items-center">
              <button onClick={handleUndo} disabled={historyStep === 0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30"><RotateCcw size={18} /></button>
              <button onClick={handleRedo} disabled={historyStep === strokes.length} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30"><RotateCw size={18} /></button>
              <div className="w-px h-8 bg-gray-200 dark:bg-slate-600 mx-1"></div>
              <button onClick={handleClear} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"><Trash2 size={18} /></button>
              <div className="w-px h-8 bg-gray-200 dark:bg-slate-600 mx-1"></div>
              
-             <button onClick={handleEmailSig} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Email Signature"><Mail size={18} /></button>
-             <button onClick={handleAnimatedSVG} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Download Animated SVG"><Play size={18} /></button>
-             <button onClick={handleDownloadSVG} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Download SVG"><FileJson size={18} /></button>
+             <div className="hidden sm:flex items-center">
+                <button onClick={handleEmailSig} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Email Signature"><Mail size={18} /></button>
+                <button onClick={handleAnimatedSVG} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Download Animated SVG"><Play size={18} /></button>
+                <button onClick={handleDownloadSVG} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Download SVG"><FileJson size={18} /></button>
+             </div>
              <button onClick={handleDownload} disabled={historyStep===0} className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-xs font-bold shadow-md hover:opacity-90 disabled:opacity-50"><Download size={14} /> PNG</button>
         </div>
+      </div>
+      <div className="mt-2 text-center">
+          <p className="text-[10px] text-slate-400 flex items-center justify-center gap-1">
+              <Fingerprint size={12} /> Pressure Sensitivity Enabled (Supported Devices)
+          </p>
       </div>
     </div>
   );

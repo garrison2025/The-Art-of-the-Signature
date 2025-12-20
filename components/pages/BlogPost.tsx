@@ -1,19 +1,29 @@
 import React, { useEffect } from 'react';
 import { ArrowLeft, Clock, Calendar, Facebook, Linkedin, Link as LinkIcon, PenTool } from 'lucide-react';
-import { BlogPost as BlogPostType, PageView } from '../../types';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { BLOG_POSTS } from '../../data/blogPosts';
+import SEO from '../SEO';
 
-interface BlogPostProps {
-  post: BlogPostType;
-  onBack: () => void;
-  onNavigate: (page: PageView) => void;
-}
+const BlogPost: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const post = BLOG_POSTS.find(p => p.slug === slug);
 
-const BlogPost: React.FC<BlogPostProps> = ({ post, onBack, onNavigate }) => {
-  
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [post]);
+  }, [slug]);
+
+  if (!post) {
+      return (
+          <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa] dark:bg-slate-950">
+              <div className="text-center">
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Article Not Found</h2>
+                  <Link to="/blog" className="text-blue-600 hover:underline">Back to Blog</Link>
+              </div>
+          </div>
+      );
+  }
 
   const handleShare = () => {
     if (navigator.share) {
@@ -28,8 +38,28 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, onBack, onNavigate }) => {
     }
   };
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "image": [post.coverImage],
+    "datePublished": post.date, 
+    "author": [{
+        "@type": "Organization",
+        "name": "SignCraft Team",
+        "url": "https://handwrittensignaturegenerator.org"
+    }]
+  };
+
   return (
     <article className="animate-fade-in bg-[#f8f9fa] dark:bg-slate-950 min-h-screen">
+      <SEO 
+        title={post.title}
+        description={post.excerpt}
+        type="article"
+        image={post.coverImage}
+        schema={articleSchema}
+      />
       
       {/* Progress Bar (Optional simple implementation) */}
       <div className="fixed top-0 left-0 w-full h-1 z-50 bg-transparent">
@@ -38,15 +68,15 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, onBack, onNavigate }) => {
 
       <div className="max-w-3xl mx-auto px-6 py-12">
         {/* Nav Back */}
-        <button 
-            onClick={onBack}
+        <Link 
+            to="/blog"
             className="group flex items-center text-sm font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white mb-8 transition-colors"
         >
             <div className="bg-white dark:bg-slate-800 p-2 rounded-full mr-3 shadow-sm group-hover:-translate-x-1 transition-transform border border-gray-100 dark:border-slate-700">
                 <ArrowLeft size={16} />
             </div>
             Back to Blog
-        </button>
+        </Link>
 
         {/* Header */}
         <header className="mb-10 text-center">
@@ -121,7 +151,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post, onBack, onNavigate }) => {
                     Put this knowledge into practice. Use our free tool to generate a professional handwritten signature in seconds.
                 </p>
                 <button 
-                    onClick={() => onNavigate('home')}
+                    onClick={() => navigate('/')}
                     className="bg-white text-slate-900 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-100 transition-colors shadow-lg"
                 >
                     Launch Generator

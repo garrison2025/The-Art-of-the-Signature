@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Handwritten Signature Generator | SignCraft</title>
+    <meta name="description" content="A professional handwritten signature generator. Create secure, digital styles in seconds using various fonts or freehand drawing.">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,13 +18,18 @@
     "react": "https://esm.sh/react@^19.2.3",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^6.22.3",
+    "react-helmet-async": "https://esm.sh/react-helmet-async@^2.0.4",
     "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
     "vite": "https://esm.sh/vite@^7.3.0",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
     "driver.js": "https://esm.sh/driver.js@^1.4.0",
     "driver.js/": "https://esm.sh/driver.js@^1.4.0/",
     "pdfjs-dist": "https://esm.sh/pdfjs-dist@^5.4.449",
-    "pdf-lib": "https://esm.sh/pdf-lib@^1.17.1"
+    "pdf-lib": "https://esm.sh/pdf-lib@^1.17.1",
+    "fs": "https://esm.sh/fs@^0.0.1-security",
+    "url": "https://esm.sh/url@^0.11.4",
+    "path": "https://esm.sh/path@^0.12.7"
   }
 }
 </script>
@@ -28,5 +37,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          // This is a placeholder for future PWA implementation
+        });
+      }
+    </script>
   </body>
 </html>

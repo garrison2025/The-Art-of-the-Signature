@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Sliders, MoveHorizontal, Bold, Italic, Maximize, Check, Eye, FileJson, Mail } from 'lucide-react';
+import { Download, Sliders, MoveHorizontal, Bold, Italic, Maximize, Check, Eye, FileJson, Mail, Type } from 'lucide-react';
 import { FONT_OPTIONS } from '../constants';
 import { generateSignatureImage, downloadDataUrl } from '../utils/canvasUtils';
 import { generateTypeSVG, downloadSVG } from '../utils/exportUtils';
@@ -14,7 +14,14 @@ interface TypeModeProps {
 }
 
 const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHistory, onOpenEmailBuilder }) => {
-  const displayText = text.trim() || "Your Name";
+  const [useInitials, setUseInitials] = useState(false);
+  
+  const getInitials = (str: string) => {
+      return str.split(' ').map(word => word.charAt(0).toUpperCase()).join('.');
+  };
+  
+  const rawText = text.trim() || "Your Name";
+  const displayText = useInitials ? getInitials(rawText) : rawText;
   
   // Customization State
   const [slant, setSlant] = useState(0); // -20 to 20
@@ -115,14 +122,14 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHis
 
             {/* Toggles Group */}
             <div className="flex flex-wrap gap-3 text-xs font-medium text-slate-600 dark:text-slate-300">
+                <button onClick={() => setUseInitials(!useInitials)} className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${useInitials ? 'bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-500 text-slate-900 dark:text-white' : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`} title="Generate Initials (e.g. John Doe -> J.D.)">
+                   {useInitials ? <Check size={14} /> : <div className="w-3.5 h-3.5" />} Initials
+                </button>
                 <button onClick={() => setTexture(!texture)} className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${texture ? 'bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-500 text-slate-900 dark:text-white' : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`} title="Add realistic ink imperfections">
                    {texture ? <Check size={14} /> : <div className="w-3.5 h-3.5" />} Ink Texture
                 </button>
                 <button onClick={() => setShowPreviewLine(!showPreviewLine)} className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${showPreviewLine ? 'bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-500 text-slate-900 dark:text-white' : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
                    {showPreviewLine ? <Check size={14} /> : <div className="w-3.5 h-3.5" />} Sign Line
-                </button>
-                <button onClick={() => setTrim(!trim)} className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${trim ? 'bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-500 text-slate-900 dark:text-white' : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
-                   {trim ? <Check size={14} /> : <div className="w-3.5 h-3.5" />} Auto-Trim
                 </button>
                 <div className="flex items-center gap-1 bg-gray-100 dark:bg-slate-900 p-1 rounded-lg">
                     <button onClick={() => setBgColor('transparent')} className={`w-6 h-6 rounded flex items-center justify-center border ${bgColor === 'transparent' ? 'bg-white shadow-sm border-gray-200' : 'border-transparent opacity-50'}`}><div className="w-3 h-3 bg-gray-300 rounded-full" style={{backgroundImage: 'linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)', backgroundSize: '4px 4px'}}></div></button>
