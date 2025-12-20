@@ -87,38 +87,45 @@ function App() {
                     <div className="max-w-4xl mx-auto text-center px-6">
                         <h5 className="text-[10px] font-bold tracking-widest text-slate-300 dark:text-slate-600 uppercase mb-6">Supported Signature Styles</h5>
                         <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-[10px] text-slate-300 dark:text-slate-600 leading-none">
-                            <span>Dr Sugiyama Signature</span>
-                            <span>Comforter Brush Signature</span>
-                            <span>WindSong Signature</span>
-                            <span>Monsieur La Doulaise Signature</span>
-                            <span>Mrs Saint Delafield Signature</span>
-                            <span>Qwigley Signature</span>
-                            <span>Reenie Beanie Signature</span>
-                            <span>Waiting for the Sunrise Signature</span>
-                            <span>Nothing You Could Do Signature</span>
-                            <span>Zeyada Signature</span>
-                            <span>Homemade Apple Signature</span>
-                            <span>Cedarville Cursive Signature</span>
-                            <span>Shadows Into Light Signature</span>
-                            <span>La Belle Aurore Signature</span>
-                            <span>Nanum Pen Script Signature</span>
-                            <span>Rock Salt Signature</span>
-                            <span>Dawning of a New Day Signature</span>
-                            <span>Great Vibes Signature</span>
-                            <span>Pinyon Script Signature</span>
-                            <span>Parisienne Signature</span>
-                            <span>Allura Signature</span>
-                            <span>Herr Von Muellerhoff Signature</span>
-                            <span>Tangerine Signature</span>
-                            <span>Petit Formal Script Signature</span>
-                            <span>Kristi Signature</span>
-                            <span>Rouge Script Signature</span>
-                            <span>Alex Brush Signature</span>
-                            <span>Sacramento Signature</span>
-                            <span>Dancing Script Signature</span>
-                            <span>Caveat Signature</span>
-                            <span>Yellowtail Signature</span>
-                            <span>Marck Script Signature</span>
+                            <span>Dr Sugiyama</span>
+                            <span>Birthstone Signature</span>
+                            <span>Just Me Again Down Here</span>
+                            <span>Comforter Brush</span>
+                            <span>WindSong</span>
+                            <span>Monsieur La Doulaise</span>
+                            <span>Mrs Saint Delafield</span>
+                            <span>Qwigley</span>
+                            <span>Reenie Beanie</span>
+                            <span>Waiting for the Sunrise</span>
+                            <span>Nothing You Could Do</span>
+                            <span>Zeyada</span>
+                            <span>Homemade Apple</span>
+                            <span>Cedarville Cursive</span>
+                            <span>Shadows Into Light</span>
+                            <span>La Belle Aurore</span>
+                            <span>Nanum Pen Script</span>
+                            <span>Rock Salt</span>
+                            <span>Gloria Hallelujah</span>
+                            <span>Dawning of a New Day</span>
+                            <span>Great Vibes</span>
+                            <span>Pinyon Script</span>
+                            <span>Parisienne</span>
+                            <span>Explora Signature</span>
+                            <span>Allura</span>
+                            <span>Herr Von Muellerhoff</span>
+                            <span>Tangerine</span>
+                            <span>Petit Formal Script</span>
+                            <span>Kristi</span>
+                            <span>Italianno</span>
+                            <span>Rouge Script</span>
+                            <span>Rochester</span>
+                            <span>Sacramento</span>
+                            <span>Dancing Script</span>
+                            <span>Caveat</span>
+                            <span>Clicker Script</span>
+                            <span>Yellowtail</span>
+                            <span>Marck Script</span>
+                            <span>Euphoria Script</span>
                         </div>
                     </div>
                 </div>
