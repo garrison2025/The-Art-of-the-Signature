@@ -98,20 +98,27 @@ function App() {
                             <span>Nothing You Could Do Signature</span>
                             <span>Zeyada Signature</span>
                             <span>Homemade Apple Signature</span>
-                            <span>Covered By Your Grace Signature</span>
-                            <span>Just Me Again Down Here Signature</span>
+                            <span>Cedarville Cursive Signature</span>
+                            <span>Shadows Into Light Signature</span>
                             <span>La Belle Aurore Signature</span>
-                            <span>Meddon Signature</span>
+                            <span>Nanum Pen Script Signature</span>
+                            <span>Rock Salt Signature</span>
+                            <span>Dawning of a New Day Signature</span>
                             <span>Great Vibes Signature</span>
                             <span>Pinyon Script Signature</span>
                             <span>Parisienne Signature</span>
                             <span>Allura Signature</span>
                             <span>Herr Von Muellerhoff Signature</span>
+                            <span>Tangerine Signature</span>
+                            <span>Petit Formal Script Signature</span>
+                            <span>Kristi Signature</span>
+                            <span>Rouge Script Signature</span>
                             <span>Alex Brush Signature</span>
                             <span>Sacramento Signature</span>
                             <span>Dancing Script Signature</span>
                             <span>Caveat Signature</span>
-                            <span>Gloria Hallelujah Signature</span>
+                            <span>Yellowtail Signature</span>
+                            <span>Marck Script Signature</span>
                         </div>
                     </div>
                 </div>
