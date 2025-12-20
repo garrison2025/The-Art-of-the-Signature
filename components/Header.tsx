@@ -1,0 +1,32 @@
+import React from 'react';
+import { PenTool, Moon } from 'lucide-react';
+
+const Header: React.FC = () => {
+  return (
+    <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="bg-slate-900 text-white p-1.5 rounded-lg">
+            <PenTool size={20} />
+          </div>
+          <span className="font-serif text-xl font-bold text-slate-900 tracking-tight">SignCraft</span>
+        </div>
+
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+          <a href="#" className="text-slate-900">Generator</a>
+          <a href="#features" className="hover:text-slate-900 transition-colors">Why Us</a>
+          <a href="#howto" className="hover:text-slate-900 transition-colors">How to Use</a>
+          <a href="#gallery" className="hover:text-slate-900 transition-colors">Gallery</a>
+        </nav>
+
+        <div className="flex items-center gap-4">
+          <button className="p-2 text-slate-400 hover:text-slate-900 transition-colors">
+            <Moon size={20} />
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
