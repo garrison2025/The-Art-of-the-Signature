@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type SignatureStyle = 'CEO Scribble' | 'Handwriting' | 'Elegant' | 'Casual';
 
 export interface FontOption {
@@ -15,7 +17,7 @@ export interface SignatureColor {
 
 export type TabMode = 'type' | 'draw' | 'scan' | 'sign-pdf';
 
-export type PageView = 'home' | 'about' | 'contact' | 'privacy' | 'terms';
+export type PageView = 'home' | 'about' | 'contact' | 'privacy' | 'terms' | 'blog' | 'blog-post';
 
 export interface TypeSignatureConfig {
     text: string;
@@ -58,4 +60,15 @@ export interface EmailSignatureConfig {
     phone: string;
     email: string;
     website: string;
+}
+
+export interface BlogPost {
+    id: string;
+    slug: string;
+    title: string;
+    excerpt: string;
+    coverImage: string;
+    date: string;
+    readTime: string;
+    content: React.ReactNode;
 }

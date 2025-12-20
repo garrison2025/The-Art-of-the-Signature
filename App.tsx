@@ -8,12 +8,15 @@ import About from './components/pages/About';
 import Contact from './components/pages/Contact';
 import Privacy from './components/pages/Privacy';
 import Terms from './components/pages/Terms';
+import BlogList from './components/pages/BlogList';
+import BlogPost from './components/pages/BlogPost';
 import OnboardingTour from './components/OnboardingTour';
 import { Star } from 'lucide-react';
-import { PageView } from './types';
+import { PageView, BlogPost as BlogPostType } from './types';
 
 function App() {
   const [currentView, setCurrentView] = useState<PageView>('home');
+  const [selectedPost, setSelectedPost] = useState<BlogPostType | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -44,6 +47,11 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleReadPost = (post: BlogPostType) => {
+      setSelectedPost(post);
+      handleNavigate('blog-post');
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'about':
@@ -54,6 +62,11 @@ function App() {
         return <Privacy />;
       case 'terms':
         return <Terms />;
+      case 'blog':
+        return <BlogList onReadPost={handleReadPost} />;
+      case 'blog-post':
+        if (!selectedPost) return <BlogList onReadPost={handleReadPost} />;
+        return <BlogPost post={selectedPost} onBack={() => handleNavigate('blog')} onNavigate={handleNavigate} />;
       case 'home':
       default:
         return (

@@ -31,6 +31,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <h4 className="font-serif font-bold text-slate-900 dark:text-white mb-4 text-sm transition-colors">Product</h4>
             <ul className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
               <li><button onClick={() => onNavigate('home')} className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Signature Generator</button></li>
+              <li><button onClick={() => onNavigate('blog')} className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Blog & Guides</button></li>
               <li><button onClick={() => onNavigate('home')} className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Email Signatures</button></li>
             </ul>
           </div>

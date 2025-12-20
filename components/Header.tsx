@@ -24,6 +24,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, isDarkMode, toggleTheme }) 
 
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-400">
           <button onClick={() => onNavigate('home')} className="hover:text-slate-900 dark:hover:text-white transition-colors">Generator</button>
+          <button onClick={() => onNavigate('blog')} className="hover:text-slate-900 dark:hover:text-white transition-colors">Blog</button>
           <button onClick={() => onNavigate('about')} className="hover:text-slate-900 dark:hover:text-white transition-colors">About Us</button>
           <button onClick={() => onNavigate('contact')} className="hover:text-slate-900 dark:hover:text-white transition-colors">Contact</button>
         </nav>
