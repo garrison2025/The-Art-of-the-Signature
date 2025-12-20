@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { Download, Sliders, MoveHorizontal, Bold, Italic, Maximize, Check } from 'lucide-react';
+import { Download, Sliders, MoveHorizontal, Bold, Italic, Maximize, Check, Eye, FileJson } from 'lucide-react';
 import { FONT_OPTIONS } from '../constants';
 import { generateSignatureImage, downloadDataUrl } from '../utils/canvasUtils';
+import { generateTypeSVG, downloadSVG } from '../utils/exportUtils';
 import { TypeSignatureConfig } from '../types';
 
 interface TypeModeProps {
   text: string;
   color: string;
+  onPreview: (dataUrl: string) => void;
+  onSaveToHistory: (dataUrl: string) => void;
 }
 
-const TypeMode: React.FC<TypeModeProps> = ({ text, color }) => {
+const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHistory }) => {
   const displayText = text.trim() || "Your Name";
   
   // Customization State
@@ -19,24 +22,44 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color }) => {
   
   // Export/Preview State
   const [trim, setTrim] = useState(true);
+  const [texture, setTexture] = useState(false); // New: Ink Realism
   const [showPreviewLine, setShowPreviewLine] = useState(false);
   const [bgColor, setBgColor] = useState<'transparent' | '#ffffff' | '#000000'>('transparent');
 
-  const handleDownload = (fontIndex: number) => {
-    const font = FONT_OPTIONS[fontIndex];
-    
-    const config: TypeSignatureConfig = {
+  const getConfig = (): TypeSignatureConfig => ({
         text: displayText,
         color,
         slant,
         spacing,
         weight,
         trim,
+        texture,
         backgroundColor: bgColor
-    };
+  });
 
+  const handleDownload = (fontIndex: number) => {
+    const font = FONT_OPTIONS[fontIndex];
+    const config = getConfig();
     const dataUrl = generateSignatureImage(font, config);
+    
+    // Save to history before download
+    onSaveToHistory(dataUrl);
+    
     downloadDataUrl(dataUrl, `signature-${font.name.replace(/\s+/g, '-').toLowerCase()}.png`);
+  };
+
+  const handleDownloadSVG = (fontIndex: number) => {
+      const font = FONT_OPTIONS[fontIndex];
+      const config = getConfig();
+      const svgString = generateTypeSVG(font, config);
+      downloadSVG(svgString, `signature-${font.name.replace(/\s+/g, '-').toLowerCase()}.svg`);
+  };
+
+  const handlePreviewClick = (fontIndex: number) => {
+      const font = FONT_OPTIONS[fontIndex];
+      const config = getConfig();
+      const dataUrl = generateSignatureImage(font, config);
+      onPreview(dataUrl);
   };
 
   return (
@@ -91,7 +114,17 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color }) => {
             <div className="w-px h-10 bg-gray-100 dark:bg-slate-700 hidden md:block"></div>
 
             {/* Toggles Group */}
-            <div className="flex flex-wrap gap-4 text-xs font-medium text-slate-600 dark:text-slate-300">
+            <div className="flex flex-wrap gap-3 text-xs font-medium text-slate-600 dark:text-slate-300">
+                <button 
+                    onClick={() => setTexture(!texture)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all
+                        ${texture ? 'bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-500 text-slate-900 dark:text-white' : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                    title="Add realistic ink imperfections"
+                >
+                   {texture ? <Check size={14} /> : <div className="w-3.5 h-3.5" />}
+                   Ink Texture
+                </button>
+
                 <button 
                     onClick={() => setShowPreviewLine(!showPreviewLine)}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all
@@ -151,7 +184,10 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color }) => {
             </div>
 
             {/* Signature Area */}
-            <div className="h-48 flex items-center justify-center p-6 bg-white dark:bg-slate-800 relative">
+            <div 
+                className="h-48 flex items-center justify-center p-6 bg-white dark:bg-slate-800 relative cursor-pointer"
+                onClick={() => handlePreviewClick(index)}
+            >
               
               {/* Contextual Preview Line */}
               {showPreviewLine && (
@@ -168,25 +204,43 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color }) => {
                   fontSize: `${2.5 * font.fontSizeAdjust}rem`,
                   transform: `skewX(-${slant}deg)`,
                   letterSpacing: `${spacing}px`,
-                  fontWeight: weight
+                  fontWeight: weight,
+                  opacity: texture ? 0.9 : 1 // Simple CSS fallback for texture visual in grid
                 }}
-                className="text-center break-all leading-tight transition-all duration-200 relative z-10"
+                className={`text-center break-all leading-tight transition-all duration-200 relative z-10 ${texture ? 'mix-blend-multiply dark:mix-blend-normal' : ''}`}
               >
                 {displayText}
               </p>
+
+              {/* Hover Prompt */}
+              <div className="absolute inset-0 bg-slate-900/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="bg-white dark:bg-slate-900 text-slate-800 dark:text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-2">
+                      <Eye size={12} /> Click to Test Drive
+                  </div>
+              </div>
             </div>
 
             {/* Footer / Overlay */}
-            <div className="px-6 py-3 border-t border-gray-50 dark:border-slate-700 flex items-center justify-between bg-gray-50/50 dark:bg-slate-900/30">
-              <span className="text-[10px] font-bold text-gray-400 dark:text-slate-500 tracking-widest uppercase">{font.name}</span>
+            <div className="px-4 py-3 border-t border-gray-50 dark:border-slate-700 flex items-center justify-between bg-gray-50/50 dark:bg-slate-900/30">
+              <span className="text-[10px] font-bold text-gray-400 dark:text-slate-500 tracking-widest uppercase truncate max-w-[100px]">{font.name}</span>
               
-              <button 
-                onClick={() => handleDownload(index)}
-                className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 px-3 py-1.5 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 transition-all"
-              >
-                <Download size={14} />
-                Save
-              </button>
+              <div className="flex items-center gap-2">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleDownloadSVG(index); }}
+                    className="flex items-center gap-1 text-[10px] font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white px-2 py-1.5 rounded hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-gray-200 dark:hover:border-slate-600 transition-all"
+                    title="Download Vector SVG"
+                  >
+                    <FileJson size={12} />
+                    SVG
+                  </button>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleDownload(index); }}
+                    className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 px-3 py-1.5 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 transition-all"
+                  >
+                    <Download size={14} />
+                    PNG
+                  </button>
+              </div>
             </div>
           </div>
         ))}

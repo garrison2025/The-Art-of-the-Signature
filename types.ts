@@ -24,5 +24,29 @@ export interface TypeSignatureConfig {
     spacing: number; // -2 to 10px
     weight: number; // 400 to 900
     trim: boolean;
+    texture: boolean; // New: Realism/Grunge effect
     backgroundColor: 'transparent' | '#ffffff' | '#000000';
+}
+
+export interface SignatureHistoryItem {
+    id: string;
+    type: 'type' | 'draw';
+    dataUrl: string;
+    timestamp: number;
+    label: string; // "John Doe" or "Sketch"
+}
+
+export interface Point {
+  x: number;
+  y: number;
+  pressure?: number;
+  time?: number;
+}
+
+export interface Stroke {
+  points: Point[];
+  color: string;
+  isEraser: boolean;
+  baseWidth: number;
+  smoothing: number;
 }

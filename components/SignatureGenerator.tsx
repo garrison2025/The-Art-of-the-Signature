@@ -1,8 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Type, PenTool as DrawIcon, RefreshCw, Plus } from 'lucide-react';
 import TypeMode from './TypeMode';
 import DrawMode from './DrawMode';
-import { TabMode } from '../types';
+import ContextPreviewModal from './ContextPreviewModal';
+import SignatureHistory from './SignatureHistory';
+import { TabMode, SignatureHistoryItem } from '../types';
 import { SIGNATURE_COLORS } from '../constants';
 
 const SignatureGenerator: React.FC = () => {
@@ -10,6 +12,31 @@ const SignatureGenerator: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [selectedColor, setSelectedColor] = useState(SIGNATURE_COLORS[0].hex);
   const colorInputRef = useRef<HTMLInputElement>(null);
+
+  // History State
+  const [history, setHistory] = useState<SignatureHistoryItem[]>([]);
+  
+  // Preview State
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewDataUrl, setPreviewDataUrl] = useState('');
+
+  // Load history on mount
+  useEffect(() => {
+      const saved = localStorage.getItem('signatureHistory');
+      if (saved) {
+          try {
+              setHistory(JSON.parse(saved));
+          } catch (e) {
+              console.error("Failed to load history");
+          }
+      }
+  }, []);
+
+  const saveHistory = (newItem: SignatureHistoryItem) => {
+      const newHistory = [newItem, ...history].slice(0, 10); // Keep last 10
+      setHistory(newHistory);
+      localStorage.setItem('signatureHistory', JSON.stringify(newHistory));
+  };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value);
@@ -23,7 +50,26 @@ const SignatureGenerator: React.FC = () => {
     setSelectedColor(e.target.value);
   };
 
-  // Check if the currently selected color is one of the presets
+  const handlePreview = (dataUrl: string) => {
+      setPreviewDataUrl(dataUrl);
+      setIsPreviewOpen(true);
+  };
+
+  const handleSaveToHistory = (dataUrl: string) => {
+      saveHistory({
+          id: Date.now().toString(),
+          type: activeTab,
+          dataUrl,
+          timestamp: Date.now(),
+          label: activeTab === 'type' ? (inputText || 'Typed') : 'Drawn'
+      });
+  };
+
+  const handleClearHistory = () => {
+      setHistory([]);
+      localStorage.removeItem('signatureHistory');
+  };
+
   const isCustomColor = !SIGNATURE_COLORS.some(c => c.hex === selectedColor);
 
   return (
@@ -121,13 +167,30 @@ const SignatureGenerator: React.FC = () => {
         {/* Content Area (Grid or Canvas) */}
         <div className={`p-8 min-h-[400px] transition-colors duration-300 ${activeTab === 'type' ? 'bg-slate-50/50 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'}`}>
           {activeTab === 'type' ? (
-            <TypeMode text={inputText} color={selectedColor} />
+            <TypeMode 
+                text={inputText} 
+                color={selectedColor} 
+                onPreview={handlePreview}
+                onSaveToHistory={handleSaveToHistory}
+            />
           ) : (
-            <DrawMode color={selectedColor} />
+            <DrawMode 
+                color={selectedColor} 
+                onPreview={handlePreview}
+                onSaveToHistory={handleSaveToHistory}
+            />
           )}
+
+          <SignatureHistory history={history} onClear={handleClearHistory} />
         </div>
 
       </div>
+
+      <ContextPreviewModal 
+        isOpen={isPreviewOpen} 
+        onClose={() => setIsPreviewOpen(false)} 
+        signatureDataUrl={previewDataUrl}
+      />
     </div>
   );
 };
