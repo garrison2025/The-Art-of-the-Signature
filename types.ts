@@ -14,3 +14,5 @@ export interface SignatureColor {
 }
 
 export type TabMode = 'type' | 'draw';
+
+export type PageView = 'home' | 'about' | 'contact' | 'privacy' | 'terms';

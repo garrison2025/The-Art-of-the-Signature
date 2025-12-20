@@ -1,14 +1,22 @@
 import React from 'react';
 import { PenTool } from 'lucide-react';
+import { PageView } from '../types';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigate: (page: PageView) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
     <footer className="bg-white border-t border-gray-100 py-16">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           
           <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
+            <div 
+              className="flex items-center gap-2 mb-4 cursor-pointer"
+              onClick={() => onNavigate('home')}
+            >
                <div className="bg-slate-900 text-white p-1 rounded-md">
                 <PenTool size={16} />
               </div>
@@ -22,26 +30,24 @@ const Footer: React.FC = () => {
           <div className="col-span-1">
             <h4 className="font-serif font-bold text-slate-900 mb-4 text-sm">Product</h4>
             <ul className="space-y-2 text-xs text-slate-500">
-              <li><a href="#" className="hover:text-slate-900">Signature Generator</a></li>
-              <li><a href="#" className="hover:text-slate-900">Email Signatures</a></li>
-              <li><a href="#" className="hover:text-slate-900">Blog</a></li>
+              <li><button onClick={() => onNavigate('home')} className="hover:text-slate-900">Signature Generator</button></li>
+              <li><button onClick={() => onNavigate('home')} className="hover:text-slate-900">Email Signatures</button></li>
             </ul>
           </div>
 
           <div className="col-span-1">
             <h4 className="font-serif font-bold text-slate-900 mb-4 text-sm">Company</h4>
             <ul className="space-y-2 text-xs text-slate-500">
-              <li><a href="#" className="hover:text-slate-900">About Us</a></li>
-              <li><a href="#" className="hover:text-slate-900">Contact</a></li>
-              <li><a href="#" className="hover:text-slate-900">Press</a></li>
+              <li><button onClick={() => onNavigate('about')} className="hover:text-slate-900">About Us</button></li>
+              <li><button onClick={() => onNavigate('contact')} className="hover:text-slate-900">Contact</button></li>
             </ul>
           </div>
 
           <div className="col-span-1">
             <h4 className="font-serif font-bold text-slate-900 mb-4 text-sm">Legal</h4>
             <ul className="space-y-2 text-xs text-slate-500">
-              <li><a href="#" className="hover:text-slate-900">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-slate-900">Terms & Conditions</a></li>
+              <li><button onClick={() => onNavigate('privacy')} className="hover:text-slate-900">Privacy Policy</button></li>
+              <li><button onClick={() => onNavigate('terms')} className="hover:text-slate-900">Terms & Conditions</button></li>
             </ul>
           </div>
 

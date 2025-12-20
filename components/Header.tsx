@@ -1,11 +1,19 @@
 import React from 'react';
 import { PenTool, Moon } from 'lucide-react';
+import { PageView } from '../types';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onNavigate: (page: PageView) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
   return (
     <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div 
+          className="flex items-center gap-2 cursor-pointer" 
+          onClick={() => onNavigate('home')}
+        >
           <div className="bg-slate-900 text-white p-1.5 rounded-lg">
             <PenTool size={20} />
           </div>
@@ -13,10 +21,9 @@ const Header: React.FC = () => {
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-          <a href="#" className="text-slate-900">Generator</a>
-          <a href="#features" className="hover:text-slate-900 transition-colors">Why Us</a>
-          <a href="#howto" className="hover:text-slate-900 transition-colors">How to Use</a>
-          <a href="#gallery" className="hover:text-slate-900 transition-colors">Gallery</a>
+          <button onClick={() => onNavigate('home')} className="hover:text-slate-900 transition-colors">Generator</button>
+          <button onClick={() => onNavigate('about')} className="hover:text-slate-900 transition-colors">About Us</button>
+          <button onClick={() => onNavigate('contact')} className="hover:text-slate-900 transition-colors">Contact</button>
         </nav>
 
         <div className="flex items-center gap-4">
