@@ -22,6 +22,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [lineWidth, setLineWidth] = useState(2.5);
   const [tool, setTool] = useState<'pen' | 'eraser'>('pen');
   const [strokes, setStrokes] = useState<Stroke[]>([]);
@@ -40,16 +41,18 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
         canvas.height = 450;
         
         // Redraw content
-        redrawCanvas(strokes.slice(0, historyStep));
+        if (!isAnimating) {
+            redrawCanvas(strokes.slice(0, historyStep));
+        }
       }
     };
 
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [strokes, historyStep]); // Re-bind if history changes, though redraw uses refs usually
+  }, [strokes, historyStep, isAnimating]);
 
-  // Redraw function
+  // Redraw function (Instant)
   const redrawCanvas = (strokesToDraw: Stroke[]) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -87,6 +90,91 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
     ctx.globalCompositeOperation = 'source-over';
   };
 
+  // Animation Function
+  const playAnimation = () => {
+    if (isAnimating || historyStep === 0 || !canvasRef.current) return;
+    
+    setIsAnimating(true);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Filter strokes up to historyStep
+    const currentStrokes = strokes.slice(0, historyStep);
+    
+    let strokeIdx = 0;
+    let pointIdx = 1;
+
+    const animate = () => {
+        if (strokeIdx >= currentStrokes.length) {
+            setIsAnimating(false);
+            return;
+        }
+
+        const stroke = currentStrokes[strokeIdx];
+        
+        // Handle single point strokes (dots)
+        if (stroke.points.length < 2) {
+             if (pointIdx === 1) { // Draw dot once
+                ctx.beginPath();
+                ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.width / 2, 0, Math.PI * 2);
+                ctx.fillStyle = stroke.isEraser ? '#ffffff' : stroke.color;
+                if (stroke.isEraser) ctx.globalCompositeOperation = 'destination-out';
+                ctx.fill();
+                ctx.globalCompositeOperation = 'source-over';
+             }
+             strokeIdx++;
+             pointIdx = 1;
+             requestAnimationFrame(animate);
+             return;
+        }
+
+        // Draw line segment
+        ctx.lineWidth = stroke.width;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = stroke.color;
+        
+        if (stroke.isEraser) {
+            ctx.globalCompositeOperation = 'destination-out';
+        } else {
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+        ctx.beginPath();
+        const p1 = stroke.points[pointIdx - 1];
+        const p2 = stroke.points[pointIdx];
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+        
+        ctx.globalCompositeOperation = 'source-over';
+
+        // Increment
+        // Draw multiple segments per frame for smoother/faster playback
+        const speed = 2; 
+        pointIdx += speed;
+
+        if (pointIdx >= stroke.points.length) {
+            // Finish this stroke, fill in the gap to the very last point if skipped
+            if (pointIdx > stroke.points.length && stroke.points.length > 1) {
+                 const lastP = stroke.points[stroke.points.length - 1];
+                 const prevP = stroke.points[stroke.points.length - 2];
+                 // Just ensure the visual is complete - normally covered by previous segments
+            }
+            strokeIdx++;
+            pointIdx = 1;
+        }
+
+        requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
+  };
+
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
     const rect = canvas.getBoundingClientRect();
     let clientX, clientY;
@@ -106,6 +194,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
   };
 
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    if (isAnimating) return; // Prevent drawing while animating
     const canvas = canvasRef.current;
     if (!canvas) return;
     
@@ -123,7 +212,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
     };
     
     setCurrentStroke(newStroke);
-    setStrokes([...newHistory]); // Just update the base strokes for now, we'll add the new one on end
+    setStrokes([...newHistory]); 
     
     // Initial draw dot
     const ctx = canvas.getContext('2d');
@@ -138,7 +227,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
   };
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDrawing || !currentStroke || !canvasRef.current) return;
+    if (!isDrawing || !currentStroke || !canvasRef.current || isAnimating) return;
     
     const { x, y } = getCoordinates(e, canvasRef.current);
     
@@ -183,7 +272,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
   };
 
   const handleUndo = () => {
-    if (historyStep > 0) {
+    if (historyStep > 0 && !isAnimating) {
       const newStep = historyStep - 1;
       setHistoryStep(newStep);
       redrawCanvas(strokes.slice(0, newStep));
@@ -191,7 +280,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
   };
 
   const handleRedo = () => {
-    if (historyStep < strokes.length) {
+    if (historyStep < strokes.length && !isAnimating) {
       const newStep = historyStep + 1;
       setHistoryStep(newStep);
       redrawCanvas(strokes.slice(0, newStep));
@@ -199,9 +288,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
   };
 
   const handleClear = () => {
-    const newStrokes = [...strokes.slice(0, historyStep), { points: [], color, width: 0, isEraser: false }]; // Effectively we just want to clear, but to support undo, we might need a "clear" action or just reset.
-    // Simpler: Just reset strokes but keep logic if we want true undo of clear. 
-    // For this UI, let's just wipe.
+    if (isAnimating) return;
     setStrokes([]);
     setHistoryStep(0);
     const ctx = canvasRef.current?.getContext('2d');
@@ -251,12 +338,12 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={stopDrawing}
-          className="w-full cursor-crosshair relative z-20"
+          className={`w-full relative z-20 ${isAnimating ? 'cursor-wait' : 'cursor-crosshair'}`}
           style={{ height: '450px' }}
         />
 
         {/* Placeholder Text */}
-        {historyStep === 0 && (
+        {historyStep === 0 && !isAnimating && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 select-none z-0">
             <span className="text-4xl md:text-5xl font-serif italic text-slate-400">Sign within the space</span>
           </div>
@@ -271,6 +358,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
                 <div className="flex bg-gray-100 p-1 rounded-lg">
                     <button 
                         onClick={() => setTool('pen')}
+                        disabled={isAnimating}
                         className={`p-2 rounded-md transition-colors ${tool === 'pen' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                         title="Pen"
                     >
@@ -278,6 +366,7 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
                     </button>
                     <button 
                         onClick={() => setTool('eraser')}
+                        disabled={isAnimating}
                         className={`p-2 rounded-md transition-colors ${tool === 'eraser' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                         title="Eraser"
                     >
@@ -297,19 +386,21 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
                         step="0.5"
                         value={lineWidth} 
                         onChange={(e) => setLineWidth(parseFloat(e.target.value))}
+                        disabled={isAnimating}
                         className="w-20 md:w-32 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-slate-900"
                     />
                 </div>
 
                 <div className="w-px h-8 bg-gray-200 mx-1 hidden sm:block"></div>
 
-                {/* Play / Preview (Placeholder functionality for now) */}
+                {/* Play / Preview */}
                 <button 
-                    onClick={() => redrawCanvas(strokes.slice(0, historyStep))}
-                    className="p-2 text-slate-400 hover:text-slate-600 hidden sm:block"
+                    onClick={playAnimation}
+                    disabled={isAnimating || historyStep === 0}
+                    className={`p-2 hidden sm:block transition-colors ${isAnimating ? 'text-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
                     title="Replay Stroke"
                 >
-                    <Play size={18} />
+                    <Play size={18} className={isAnimating ? 'animate-pulse' : ''} />
                 </button>
 
             </div>
@@ -320,23 +411,24 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
                 <div className="flex items-center gap-1 md:gap-2">
                     <button 
                         onClick={handleUndo}
-                        disabled={historyStep === 0}
-                        className={`p-2 rounded-lg transition-colors ${historyStep > 0 ? 'text-slate-600 hover:bg-slate-50' : 'text-slate-300 cursor-not-allowed'}`}
+                        disabled={historyStep === 0 || isAnimating}
+                        className={`p-2 rounded-lg transition-colors ${historyStep > 0 && !isAnimating ? 'text-slate-600 hover:bg-slate-50' : 'text-slate-300 cursor-not-allowed'}`}
                         title="Undo"
                     >
                         <RotateCcw size={18} />
                     </button>
                     <button 
                         onClick={handleRedo}
-                        disabled={historyStep === strokes.length}
-                        className={`p-2 rounded-lg transition-colors ${historyStep < strokes.length ? 'text-slate-600 hover:bg-slate-50' : 'text-slate-300 cursor-not-allowed'}`}
+                        disabled={historyStep === strokes.length || isAnimating}
+                        className={`p-2 rounded-lg transition-colors ${historyStep < strokes.length && !isAnimating ? 'text-slate-600 hover:bg-slate-50' : 'text-slate-300 cursor-not-allowed'}`}
                         title="Redo"
                     >
                         <RotateCw size={18} />
                     </button>
                     <button 
                         onClick={handleClear}
-                        className="p-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-red-500 transition-colors"
+                        disabled={isAnimating}
+                        className={`p-2 rounded-lg transition-colors ${!isAnimating ? 'text-slate-600 hover:bg-slate-50 hover:text-red-500' : 'text-slate-300'}`}
                         title="Clear"
                     >
                         <Trash2 size={18} />
@@ -364,9 +456,9 @@ const DrawMode: React.FC<DrawModeProps> = ({ color }) => {
 
                     <button 
                         onClick={handleDownload}
-                        disabled={historyStep === 0}
+                        disabled={historyStep === 0 || isAnimating}
                         className={`flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-lg text-white transition-all shadow-sm
-                            ${historyStep > 0 ? 'bg-slate-900 hover:bg-slate-800' : 'bg-slate-300 cursor-not-allowed'}`}
+                            ${historyStep > 0 && !isAnimating ? 'bg-slate-900 hover:bg-slate-800' : 'bg-slate-300 cursor-not-allowed'}`}
                     >
                         <Download size={14} />
                         Save
