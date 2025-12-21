@@ -110,8 +110,11 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
             onClick={() => setActiveTab('type')}
             className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
               ${activeTab === 'type' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+            aria-label="Switch to Type Mode"
+            aria-selected={activeTab === 'type'}
+            role="tab"
           >
-            <Type size={18} />
+            <Type size={18} aria-hidden="true" />
             Type
             {activeTab === 'type' && (
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 dark:bg-white"></span>
@@ -121,8 +124,11 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
             onClick={() => setActiveTab('draw')}
             className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
               ${activeTab === 'draw' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+            aria-label="Switch to Draw Mode"
+            aria-selected={activeTab === 'draw'}
+            role="tab"
           >
-            <DrawIcon size={18} />
+            <DrawIcon size={18} aria-hidden="true" />
             Draw
             {activeTab === 'draw' && (
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 dark:bg-white"></span>
@@ -132,8 +138,11 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
             onClick={() => setActiveTab('scan')}
             className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
               ${activeTab === 'scan' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+            aria-label="Switch to Scan Mode"
+            aria-selected={activeTab === 'scan'}
+            role="tab"
           >
-            <ScanLine size={18} />
+            <ScanLine size={18} aria-hidden="true" />
             Scan
             {activeTab === 'scan' && (
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 dark:bg-white"></span>
@@ -143,8 +152,11 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
             onClick={() => setActiveTab('sign-pdf')}
             className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative bg-indigo-50/50 dark:bg-indigo-900/10
               ${activeTab === 'sign-pdf' ? 'text-indigo-600 dark:text-indigo-300' : 'text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-300'}`}
+            aria-label="Switch to PDF Signing Mode"
+            aria-selected={activeTab === 'sign-pdf'}
+            role="tab"
           >
-            <FileSignature size={18} />
+            <FileSignature size={18} aria-hidden="true" />
             Sign PDF
             {activeTab === 'sign-pdf' && (
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-600 dark:bg-indigo-400"></span>
@@ -168,6 +180,7 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
                         ${selectedColor === color.hex ? 'ring-slate-900 dark:ring-white scale-105' : 'ring-transparent hover:ring-gray-200 dark:hover:ring-slate-600'}`}
                         style={{ backgroundColor: color.hex }}
                         title={color.name}
+                        aria-label={`Select ${color.name} color`}
                     />
                     ))}
                     
@@ -178,6 +191,7 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
                             className="absolute inset-0 opacity-0 w-0 h-0"
                             onChange={handleColorInputChange}
                             value={selectedColor}
+                            aria-label="Choose a custom color"
                         />
                         <button 
                             onClick={handleCustomColorClick}
@@ -185,8 +199,9 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
                             ${isCustomColor ? 'ring-slate-900 dark:ring-white scale-105' : 'ring-transparent hover:ring-gray-200 dark:hover:ring-slate-600 bg-gradient-to-br from-rose-400 to-orange-400'}`}
                             style={isCustomColor ? { backgroundColor: selectedColor } : {}}
                             title="Custom Color"
+                            aria-label="Open custom color picker"
                         >
-                            {isCustomColor ? null : <Plus size={16} className="text-white" />}
+                            {isCustomColor ? null : <Plus size={16} className="text-white" aria-hidden="true" />}
                         </button>
                     </div>
                 </div>
@@ -197,7 +212,9 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
           {activeTab === 'type' && (
             <div className="max-w-2xl mx-auto mb-12" id="input-area">
               <div className="relative group">
+                <label htmlFor="signature-text-input" className="sr-only">Type your name</label>
                 <input
+                  id="signature-text-input"
                   type="text"
                   value={inputText}
                   onChange={handleTextChange}
@@ -207,7 +224,13 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
                 />
                 <div className="h-px w-full bg-gray-100 dark:bg-slate-800 mt-2"></div>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-30 hover:opacity-100 transition-opacity cursor-pointer">
-                    <RefreshCw size={20} className="text-slate-400 dark:text-slate-500" onClick={() => setInputText('')} />
+                    <button 
+                        onClick={() => setInputText('')} 
+                        aria-label="Clear text" 
+                        className="text-slate-400 dark:text-slate-500"
+                    >
+                        <RefreshCw size={20} aria-hidden="true" />
+                    </button>
                 </div>
               </div>
             </div>
@@ -216,7 +239,7 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
         )}
 
         {/* Content Area */}
-        <div id="style-controls" className={`p-8 min-h-[400px] transition-colors duration-300 ${activeTab === 'type' ? 'bg-slate-50/50 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'}`}>
+        <div id="style-controls" className={`p-8 min-h-[400px] transition-colors duration-300 ${activeTab === 'type' ? 'bg-slate-50/50 dark:bg-slate-900' : 'bg-white dark:bg-slate-900'}`}>
           <Suspense fallback={
               <div className="flex flex-col items-center justify-center h-[300px] text-slate-400">
                   <Loader2 className="animate-spin mb-4" size={32} />

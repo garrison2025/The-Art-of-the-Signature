@@ -13,13 +13,35 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- CRITICAL FONTS ONLY: 
-         - Inter: UI Font (Weights 400, 500)
-         - Playfair Display: Hero Heading (Weights 400, 700, 400italic)
-         - REMOVED Dr Sugiyama (Loaded later via JS now) 
-    -->
+    <!-- CRITICAL FONTS: Preload Playfair Display for LCP Text -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
+    <!-- CRITICAL INLINE CSS: Renders the Hero section IMMEDIATELY without waiting for main CSS file -->
+    <style>
+      :root { --bg-color: #f8f9fa; --text-main: #0f172a; --text-muted: #64748b; --font-sans: 'Inter', sans-serif; --font-serif: 'Playfair Display', serif; }
+      body { margin: 0; font-family: var(--font-sans); background-color: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; }
+      .sh-shell { display: flex; flex-direction: column; min-height: 100vh; }
+      
+      /* Header Critical Styles */
+      .sh-header { height: 80px; background: white; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 50; width: 100%; }
+      .sh-nav-container { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+      .sh-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #0f172a; font-weight: 700; font-size: 1.25rem; font-family: var(--font-serif); }
+      .sh-logo-icon { background: #0f172a; color: white; padding: 0.375rem; border-radius: 0.5rem; display: flex; }
+      
+      /* Hero Critical Styles (LCP) */
+      .sh-hero { padding: 6rem 1.5rem 9rem; text-align: center; background-color: #f8f9fa; }
+      /* UPDATED CONTRAST: Changed color to #713f12 for > 4.5:1 contrast ratio against light yellow bg */
+      .sh-badge { display: inline-flex; align-items: center; gap: 0.375rem; background-color: rgba(254, 252, 232, 0.8); border: 1px solid #fef9c3; padding: 0.375rem 1rem; border-radius: 9999px; margin-bottom: 2rem; font-size: 0.6875rem; font-weight: 700; color: #713f12; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+      .sh-h1 { font-family: var(--font-serif); font-size: 3.75rem; line-height: 1; font-weight: 400; color: #0f172a; margin: 0 0 2rem 0; letter-spacing: -0.025em; }
+      .sh-italic { font-style: italic; color: #475569; font-weight: 300; }
+      .sh-p { max-w: 42rem; margin: 0 auto 2rem; font-size: 1.125rem; line-height: 1.75; color: #64748b; }
+      
+      /* Responsive Sizing matches Tailwind classes */
+      @media (min-width: 768px) { .sh-h1 { font-size: 4.5rem; } }
+      @media (min-width: 1024px) { .sh-h1 { font-size: 6rem; } }
+    </style>
+
     <script type="importmap">
 {
   "imports": {
@@ -43,35 +65,35 @@
 </script>
 </head>
   <body>
-    <!-- APP SHELL: Static HTML that matches Home.tsx for instant LCP -->
+    <!-- APP SHELL: Fully styled with Inline CSS for INSTANT PAINT -->
     <div id="root">
-      <div class="min-h-screen bg-[#f8f9fa] font-sans flex flex-col justify-between">
+      <div class="sh-shell">
         <!-- Static Header -->
-        <header class="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2">
-              <div class="bg-slate-900 text-white p-1.5 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+        <header class="sh-header">
+          <div class="sh-nav-container">
+            <a href="/" class="sh-logo" aria-label="Go to Homepage">
+              <div class="sh-logo-icon">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
               </div>
-              <span class="font-serif text-xl font-bold text-slate-900 tracking-tight">SignCraft</span>
+              <span>SignCraft</span>
             </a>
           </div>
         </header>
         
-        <main class="flex-grow">
+        <main style="flex-grow: 1;">
           <!-- Static Hero Section (LCP Element) -->
-          <div class="relative pt-24 pb-36 px-6 text-center">
-            <div class="inline-flex items-center gap-1.5 bg-yellow-50/80 border border-yellow-100 px-4 py-1.5 rounded-full mb-8 shadow-sm">
-               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#EAB308" stroke="#EAB308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-               <span class="text-[11px] font-bold text-yellow-700 tracking-wide uppercase">Excellent 4.9/5 Average Rating</span>
+          <div class="sh-hero">
+            <div class="sh-badge">
+               <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#EAB308" stroke="#EAB308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+               <span>Excellent 4.9/5 Average Rating</span>
             </div>
             
-            <h1 class="text-6xl md:text-7xl lg:text-8xl font-serif text-slate-900 mb-8 tracking-tight">
-              The Art of the <span class="italic text-slate-600 font-light" style="font-family: 'Playfair Display', serif; font-style: italic;">Signature</span>
+            <h1 class="sh-h1">
+              The Art of the <span class="sh-italic">Signature</span>
             </h1>
             
-            <p class="max-w-2xl mx-auto text-slate-500 text-lg leading-relaxed mb-8">
-              Create a professional digital mark with the most realistic <strong class="text-slate-700 font-medium">handwritten signature generator</strong>.
+            <p class="sh-p">
+              Create a professional digital mark with the most realistic <strong style="color: #334155; font-weight: 500;">handwritten signature generator</strong>.
             </p>
           </div>
         </main>

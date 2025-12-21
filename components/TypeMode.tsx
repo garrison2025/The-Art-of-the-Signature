@@ -93,29 +93,29 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHis
         <div className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
             {/* Sliders Group */}
             <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-                {/* Slant */}
+                {/* Slant - INCREASED CONTRAST on label (slate-500) */}
                 <div className="flex flex-col gap-2">
-                    <div className="flex justify-between text-xs font-bold uppercase text-slate-400">
+                    <div className="flex justify-between text-xs font-bold uppercase text-slate-500 dark:text-slate-400">
                         <span className="flex items-center gap-1"><Italic size={12} /> Slant</span>
                         <span>{slant}°</span>
                     </div>
-                    <input type="range" min="-15" max="15" step="1" value={slant} onChange={(e) => setSlant(Number(e.target.value))} className="h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white" />
+                    <input type="range" min="-15" max="15" step="1" value={slant} onChange={(e) => setSlant(Number(e.target.value))} aria-label="Adjust slant angle" className="h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white" />
                 </div>
-                {/* Spacing */}
+                {/* Spacing - INCREASED CONTRAST on label */}
                 <div className="flex flex-col gap-2">
-                    <div className="flex justify-between text-xs font-bold uppercase text-slate-400">
+                    <div className="flex justify-between text-xs font-bold uppercase text-slate-500 dark:text-slate-400">
                         <span className="flex items-center gap-1"><MoveHorizontal size={12} /> Spacing</span>
                         <span>{spacing}px</span>
                     </div>
-                    <input type="range" min="-2" max="5" step="0.5" value={spacing} onChange={(e) => setSpacing(Number(e.target.value))} className="h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white" />
+                    <input type="range" min="-2" max="5" step="0.5" value={spacing} onChange={(e) => setSpacing(Number(e.target.value))} aria-label="Adjust letter spacing" className="h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white" />
                 </div>
-                {/* Weight */}
+                {/* Weight - INCREASED CONTRAST on label */}
                 <div className="flex flex-col gap-2">
-                    <div className="flex justify-between text-xs font-bold uppercase text-slate-400">
+                    <div className="flex justify-between text-xs font-bold uppercase text-slate-500 dark:text-slate-400">
                         <span className="flex items-center gap-1"><Bold size={12} /> Weight</span>
                         <span>{weight}</span>
                     </div>
-                    <input type="range" min="300" max="900" step="100" value={weight} onChange={(e) => setWeight(Number(e.target.value))} className="h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white" />
+                    <input type="range" min="300" max="900" step="100" value={weight} onChange={(e) => setWeight(Number(e.target.value))} aria-label="Adjust font weight" className="h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white" />
                 </div>
             </div>
 
@@ -133,9 +133,9 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHis
                    {showPreviewLine ? <Check size={14} /> : <div className="w-3.5 h-3.5" />} Sign Line
                 </button>
                 <div className="flex items-center gap-1 bg-gray-100 dark:bg-slate-900 p-1 rounded-lg">
-                    <button onClick={() => setBgColor('transparent')} className={`w-6 h-6 rounded flex items-center justify-center border ${bgColor === 'transparent' ? 'bg-white shadow-sm border-gray-200' : 'border-transparent opacity-50'}`}><div className="w-3 h-3 bg-gray-300 rounded-full" style={{backgroundImage: 'linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)', backgroundSize: '4px 4px'}}></div></button>
-                    <button onClick={() => setBgColor('#ffffff')} className={`w-6 h-6 rounded border bg-white ${bgColor === '#ffffff' ? 'shadow-sm border-gray-300 ring-1 ring-slate-200' : 'border-transparent opacity-50'}`}></button>
-                    <button onClick={() => setBgColor('#000000')} className={`w-6 h-6 rounded border bg-black ${bgColor === '#000000' ? 'shadow-sm border-gray-600 ring-1 ring-slate-700' : 'border-transparent opacity-50'}`}></button>
+                    <button onClick={() => setBgColor('transparent')} aria-label="Transparent background" className={`w-6 h-6 rounded flex items-center justify-center border ${bgColor === 'transparent' ? 'bg-white shadow-sm border-gray-200' : 'border-transparent opacity-50'}`}><div className="w-3 h-3 bg-gray-300 rounded-full" style={{backgroundImage: 'linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)', backgroundSize: '4px 4px'}}></div></button>
+                    <button onClick={() => setBgColor('#ffffff')} aria-label="White background" className={`w-6 h-6 rounded border bg-white ${bgColor === '#ffffff' ? 'shadow-sm border-gray-300 ring-1 ring-slate-200' : 'border-transparent opacity-50'}`}></button>
+                    <button onClick={() => setBgColor('#000000')} aria-label="Black background" className={`w-6 h-6 rounded border bg-black ${bgColor === '#000000' ? 'shadow-sm border-gray-600 ring-1 ring-slate-700' : 'border-transparent opacity-50'}`}></button>
                 </div>
             </div>
         </div>
@@ -163,8 +163,10 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHis
             const realIndex = FONT_OPTIONS.indexOf(font);
             return (
           <div 
-            key={font.name} 
-            className="group relative bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 transition-all duration-300 overflow-hidden"
+            key={font.name}
+            // PERF OPTIMIZATION: content-visibility-auto allows browser to skip rendering off-screen cards
+            // contain-intrinsic-size prevents scrollbar jumping
+            className="group relative bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 transition-all duration-300 overflow-hidden content-visibility-auto contain-intrinsic-size-[260px]"
           >
             {/* Tag */}
             <div className="absolute top-4 right-4 z-10">
@@ -177,9 +179,10 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHis
             </div>
 
             {/* Signature Area */}
-            <div 
-                className="h-48 flex items-center justify-center p-6 bg-white dark:bg-slate-800 relative cursor-pointer"
+            <button 
+                className="w-full h-48 flex items-center justify-center p-6 bg-white dark:bg-slate-800 relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
                 onClick={() => handlePreviewClick(realIndex)}
+                aria-label={`Preview ${font.name} style`}
             >
               {showPreviewLine && (
                   <div className="absolute w-2/3 bottom-12 border-b-2 border-slate-100 dark:border-slate-700 flex justify-between items-end pb-1">
@@ -208,16 +211,16 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHis
                       <Eye size={12} /> Test Drive
                   </div>
               </div>
-            </div>
+            </button>
 
             {/* Footer / Overlay */}
             <div className="px-4 py-3 border-t border-gray-50 dark:border-slate-700 flex items-center justify-between bg-gray-50/50 dark:bg-slate-900/30">
               <span className="text-[10px] font-bold text-gray-400 dark:text-slate-500 tracking-widest uppercase truncate max-w-[100px]">{font.name}</span>
               
               <div className="flex items-center gap-2">
-                  <button onClick={(e) => { e.stopPropagation(); handleEmailSig(realIndex); }} className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white rounded hover:bg-white dark:hover:bg-slate-800 border border-transparent transition-all" title="Create Email Signature"><Mail size={14} /></button>
-                  <button onClick={(e) => { e.stopPropagation(); handleDownloadSVG(realIndex); }} className="flex items-center gap-1 text-[10px] font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white px-2 py-1.5 rounded hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-gray-200 dark:hover:border-slate-600 transition-all" title="Download Vector SVG"><FileJson size={12} /> SVG</button>
-                  <button onClick={(e) => { e.stopPropagation(); handleDownload(realIndex); }} className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 px-3 py-1.5 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 transition-all"><Download size={14} /> PNG</button>
+                  <button onClick={(e) => { e.stopPropagation(); handleEmailSig(realIndex); }} className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white rounded hover:bg-white dark:hover:bg-slate-800 border border-transparent transition-all" title="Create Email Signature" aria-label="Create email signature"><Mail size={14} /></button>
+                  <button onClick={(e) => { e.stopPropagation(); handleDownloadSVG(realIndex); }} className="flex items-center gap-1 text-[10px] font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white px-2 py-1.5 rounded hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-gray-200 dark:hover:border-slate-600 transition-all" title="Download Vector SVG" aria-label="Download SVG"><FileJson size={12} /> SVG</button>
+                  <button onClick={(e) => { e.stopPropagation(); handleDownload(realIndex); }} className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 px-3 py-1.5 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 transition-all" aria-label="Download PNG"><Download size={14} /> PNG</button>
               </div>
             </div>
           </div>

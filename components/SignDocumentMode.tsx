@@ -217,7 +217,7 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
         return (
             <div className="flex flex-col items-center justify-center p-12 text-center bg-gray-50 dark:bg-slate-800/50 rounded-2xl border border-gray-100 dark:border-slate-800 animate-fade-in">
                 <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-full flex items-center justify-center mb-6">
-                    <AlertCircle size={32} />
+                    <AlertCircle size={32} aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Signature Required</h3>
                 <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-6">
@@ -232,6 +232,10 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
             {!pdfFile ? (
                 // Upload State
                 <div 
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Upload a PDF document to sign"
+                    onKeyDown={(e) => { if(e.key === 'Enter') fileInputRef.current?.click() }}
                     className="border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-2xl p-12 text-center bg-gray-50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors cursor-pointer group"
                     onClick={() => fileInputRef.current?.click()}
                     id="pdf-upload-area"
@@ -242,9 +246,10 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                         accept="application/pdf" 
                         className="hidden" 
                         onChange={handleFileChange}
+                        aria-hidden="true"
                     />
                     <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                        <FileText size={32} />
+                        <FileText size={32} aria-hidden="true" />
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Upload PDF Document</h3>
                     <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
@@ -266,6 +271,7 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                                 <button 
                                     onClick={() => setPdfFile(null)} 
                                     className="text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white uppercase tracking-wider"
+                                    aria-label="Change PDF file"
                                 >
                                     Change File
                                 </button>
@@ -278,8 +284,9 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                                     onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                                     disabled={currentPage === 1 || isLoading}
                                     className="p-1 hover:bg-white dark:hover:bg-slate-700 rounded disabled:opacity-30 transition-colors text-slate-600 dark:text-slate-300"
+                                    aria-label="Previous Page"
                                 >
-                                    <ChevronLeft size={18} />
+                                    <ChevronLeft size={18} aria-hidden="true" />
                                 </button>
                                 <span className="text-xs font-mono w-16 text-center text-slate-600 dark:text-slate-300">
                                     {currentPage} / {numPages}
@@ -288,8 +295,9 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                                     onClick={() => setCurrentPage(p => Math.min(numPages, p + 1))}
                                     disabled={currentPage === numPages || isLoading}
                                     className="p-1 hover:bg-white dark:hover:bg-slate-700 rounded disabled:opacity-30 transition-colors text-slate-600 dark:text-slate-300"
+                                    aria-label="Next Page"
                                 >
-                                    <ChevronRight size={18} />
+                                    <ChevronRight size={18} aria-hidden="true" />
                                 </button>
                             </div>
                         </div>
@@ -297,17 +305,17 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                         {/* Bottom Row: Tools */}
                         <div className="flex flex-wrap items-center justify-between gap-4">
                             <div className="flex flex-wrap gap-2">
-                                <button onClick={addSignature} className="flex items-center gap-2 px-3 py-2 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 rounded-lg text-sm font-bold hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors">
-                                    <Plus size={16} /> Signature
+                                <button onClick={addSignature} className="flex items-center gap-2 px-3 py-2 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 rounded-lg text-sm font-bold hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors" aria-label="Add signature to PDF">
+                                    <Plus size={16} aria-hidden="true" /> Signature
                                 </button>
-                                <button onClick={() => addText()} className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
-                                    <FileText size={16} /> Text
+                                <button onClick={() => addText()} className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" aria-label="Add text to PDF">
+                                    <FileText size={16} aria-hidden="true" /> Text
                                 </button>
-                                <button onClick={addDate} className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
-                                    <Calendar size={16} /> Date
+                                <button onClick={addDate} className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" aria-label="Add date to PDF">
+                                    <Calendar size={16} aria-hidden="true" /> Date
                                 </button>
-                                <button onClick={addCheck} className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
-                                    <CheckSquare size={16} /> Check
+                                <button onClick={addCheck} className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" aria-label="Add checkmark to PDF">
+                                    <CheckSquare size={16} aria-hidden="true" /> Check
                                 </button>
                             </div>
 
@@ -315,8 +323,9 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                                 onClick={handleDownloadSignedPdf}
                                 disabled={isLoading || elements.length === 0}
                                 className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-colors disabled:opacity-50"
+                                aria-label="Download signed PDF"
                             >
-                                {isLoading ? <RefreshCw className="animate-spin" size={16} /> : <Download size={16} />}
+                                {isLoading ? <RefreshCw className="animate-spin" size={16} aria-hidden="true" /> : <Download size={16} aria-hidden="true" />}
                                 Download PDF
                             </button>
                         </div>
@@ -326,7 +335,7 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                     <div className="relative w-full bg-gray-100 dark:bg-slate-900/50 rounded-xl overflow-hidden min-h-[500px] flex justify-center items-center border border-gray-200 dark:border-slate-800 p-4 select-none">
                         {isLoading ? (
                              <div className="flex flex-col items-center gap-3 text-slate-400 animate-pulse">
-                                <FileText size={48} />
+                                <FileText size={48} aria-hidden="true" />
                                 <span className="text-sm font-medium">Rendering PDF Page...</span>
                              </div>
                         ) : (
@@ -360,16 +369,18 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                                         }}
                                         onMouseDown={(e) => handleDragStart(e, el.id)}
                                         onTouchStart={(e) => handleDragStart(e, el.id)}
+                                        role="group"
+                                        aria-label={`Draggable ${el.type} element`}
                                     >
                                         {/* Content */}
                                         {el.type === 'signature' && (
                                             <div style={{ width: `${el.width}px` }} className="relative">
-                                                 <img src={el.dataUrl} className="w-full h-auto pointer-events-none" />
+                                                 <img src={el.dataUrl} className="w-full h-auto pointer-events-none" alt="Signature" />
                                                  {selectedId === el.id && (
                                                      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-1 bg-slate-800 text-white rounded px-2 py-0.5">
-                                                         <button onClick={(e) => { e.stopPropagation(); updateElement(el.id, {width: Math.max(50, el.width - 10)}) }} className="px-1 hover:text-indigo-300">-</button>
-                                                         <Move size={12} />
-                                                         <button onClick={(e) => { e.stopPropagation(); updateElement(el.id, {width: Math.min(400, el.width + 10)}) }} className="px-1 hover:text-indigo-300">+</button>
+                                                         <button onClick={(e) => { e.stopPropagation(); updateElement(el.id, {width: Math.max(50, el.width - 10)}) }} className="px-1 hover:text-indigo-300" aria-label="Decrease size">-</button>
+                                                         <Move size={12} aria-hidden="true" />
+                                                         <button onClick={(e) => { e.stopPropagation(); updateElement(el.id, {width: Math.min(400, el.width + 10)}) }} className="px-1 hover:text-indigo-300" aria-label="Increase size">+</button>
                                                      </div>
                                                  )}
                                             </div>
@@ -383,12 +394,13 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                                                     className="bg-transparent border-none outline-none text-center font-sans font-medium text-slate-900 min-w-[50px]"
                                                     style={{ fontSize: `${el.fontSize}px` }}
                                                     autoFocus={selectedId === el.id}
+                                                    aria-label="Text element content"
                                                 />
                                                  {selectedId === el.id && (
                                                      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-1 bg-slate-800 text-white rounded px-2 py-0.5 whitespace-nowrap z-30">
-                                                         <button onClick={(e) => { e.stopPropagation(); updateElement(el.id, {fontSize: Math.max(10, el.fontSize - 2)}) }} className="px-1 hover:text-indigo-300">-</button>
+                                                         <button onClick={(e) => { e.stopPropagation(); updateElement(el.id, {fontSize: Math.max(10, el.fontSize - 2)}) }} className="px-1 hover:text-indigo-300" aria-label="Decrease font size">-</button>
                                                          <span className="text-[10px]">A</span>
-                                                         <button onClick={(e) => { e.stopPropagation(); updateElement(el.id, {fontSize: Math.min(72, el.fontSize + 2)}) }} className="px-1 hover:text-indigo-300">+</button>
+                                                         <button onClick={(e) => { e.stopPropagation(); updateElement(el.id, {fontSize: Math.min(72, el.fontSize + 2)}) }} className="px-1 hover:text-indigo-300" aria-label="Increase font size">+</button>
                                                      </div>
                                                  )}
                                             </div>
@@ -403,8 +415,9 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); removeElement(el.id) }}
                                                 className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 shadow-sm z-30"
+                                                aria-label="Remove element"
                                             >
-                                                <X size={12} />
+                                                <X size={12} aria-hidden="true" />
                                             </button>
                                         )}
                                     </div>

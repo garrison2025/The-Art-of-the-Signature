@@ -339,21 +339,21 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
       <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 p-3 mb-6 flex flex-wrap gap-4 items-center justify-between shadow-sm">
            <div className="flex items-center gap-4">
                <div className="flex bg-gray-100 dark:bg-slate-900 p-1 rounded-lg">
-                    <button onClick={() => setTool('pen')} className={`p-2 rounded-md transition-colors ${tool === 'pen' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400'}`} title="Pen"><Pen size={18} /></button>
-                    <button onClick={() => setTool('eraser')} className={`p-2 rounded-md transition-colors ${tool === 'eraser' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400'}`} title="Eraser"><Eraser size={18} /></button>
+                    <button onClick={() => setTool('pen')} aria-label="Use Pen Tool" className={`p-2 rounded-md transition-colors ${tool === 'pen' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400'}`} title="Pen"><Pen size={18} aria-hidden="true" /></button>
+                    <button onClick={() => setTool('eraser')} aria-label="Use Eraser Tool" className={`p-2 rounded-md transition-colors ${tool === 'eraser' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400'}`} title="Eraser"><Eraser size={18} aria-hidden="true" /></button>
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase hidden md:inline">Thickness</span>
-                    <input type="range" min="1" max="10" step="0.5" value={baseWidth} onChange={(e) => setBaseWidth(parseFloat(e.target.value))} className="w-24 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white" />
+                    <label htmlFor="thickness-slider" className="text-[10px] font-bold text-slate-400 uppercase hidden md:inline">Thickness</label>
+                    <input id="thickness-slider" type="range" min="1" max="10" step="0.5" value={baseWidth} onChange={(e) => setBaseWidth(parseFloat(e.target.value))} aria-label="Adjust pen thickness" className="w-24 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white" />
                 </div>
            </div>
            <div className="flex flex-wrap gap-2 items-center">
                 <button onClick={() => setShowPreviewLine(!showPreviewLine)} className={`text-xs font-medium px-3 py-1.5 rounded-lg border transition-all ${showPreviewLine ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 text-blue-700 dark:text-blue-300' : 'border-transparent text-slate-500'}`}>Sign Line</button>
                 <button onClick={() => setTrim(!trim)} className={`text-xs font-medium px-3 py-1.5 rounded-lg border transition-all ${trim ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 text-blue-700 dark:text-blue-300' : 'border-transparent text-slate-500'}`}>Auto-Trim</button>
                  <div className="flex items-center gap-1 bg-gray-100 dark:bg-slate-900 p-1 rounded-lg">
-                    <button onClick={() => setBgColor('transparent')} className={`w-5 h-5 rounded border ${bgColor === 'transparent' ? 'border-gray-400' : 'border-transparent opacity-50'}`}><div className="w-full h-full bg-gray-300 rounded-sm opacity-50"></div></button>
-                    <button onClick={() => setBgColor('#ffffff')} className={`w-5 h-5 rounded border bg-white ${bgColor === '#ffffff' ? 'border-gray-400' : 'border-transparent opacity-50'}`}></button>
-                    <button onClick={() => setBgColor('#000000')} className={`w-5 h-5 rounded border bg-black ${bgColor === '#000000' ? 'border-gray-400' : 'border-transparent opacity-50'}`}></button>
+                    <button onClick={() => setBgColor('transparent')} aria-label="Transparent background" className={`w-5 h-5 rounded border ${bgColor === 'transparent' ? 'border-gray-400' : 'border-transparent opacity-50'}`}><div className="w-full h-full bg-gray-300 rounded-sm opacity-50"></div></button>
+                    <button onClick={() => setBgColor('#ffffff')} aria-label="White background" className={`w-5 h-5 rounded border bg-white ${bgColor === '#ffffff' ? 'border-gray-400' : 'border-transparent opacity-50'}`}></button>
+                    <button onClick={() => setBgColor('#000000')} aria-label="Black background" className={`w-5 h-5 rounded border bg-black ${bgColor === '#000000' ? 'border-gray-400' : 'border-transparent opacity-50'}`}></button>
                 </div>
            </div>
       </div>
@@ -371,23 +371,23 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
             style={{ height: '450px' }} 
         />
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-gray-200 dark:border-slate-600 shadow-lg rounded-xl p-2 items-center">
-             <button onClick={handleUndo} disabled={historyStep === 0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30"><RotateCcw size={18} /></button>
-             <button onClick={handleRedo} disabled={historyStep === strokes.length} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30"><RotateCw size={18} /></button>
+             <button onClick={handleUndo} disabled={historyStep === 0} aria-label="Undo" className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30"><RotateCcw size={18} aria-hidden="true" /></button>
+             <button onClick={handleRedo} disabled={historyStep === strokes.length} aria-label="Redo" className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30"><RotateCw size={18} aria-hidden="true" /></button>
              <div className="w-px h-8 bg-gray-200 dark:bg-slate-600 mx-1"></div>
-             <button onClick={handleClear} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"><Trash2 size={18} /></button>
+             <button onClick={handleClear} aria-label="Clear Canvas" className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"><Trash2 size={18} aria-hidden="true" /></button>
              <div className="w-px h-8 bg-gray-200 dark:bg-slate-600 mx-1"></div>
              
              <div className="hidden sm:flex items-center">
-                <button onClick={handleEmailSig} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Email Signature"><Mail size={18} /></button>
-                <button onClick={handleAnimatedSVG} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Download Animated SVG"><Play size={18} /></button>
-                <button onClick={handleDownloadSVG} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Download SVG"><FileJson size={18} /></button>
+                <button onClick={handleEmailSig} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Email Signature" aria-label="Create email signature"><Mail size={18} aria-hidden="true" /></button>
+                <button onClick={handleAnimatedSVG} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Download Animated SVG" aria-label="Download animated SVG"><Play size={18} aria-hidden="true" /></button>
+                <button onClick={handleDownloadSVG} disabled={historyStep===0} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg disabled:opacity-30" title="Download SVG" aria-label="Download SVG"><FileJson size={18} aria-hidden="true" /></button>
              </div>
-             <button onClick={handleDownload} disabled={historyStep===0} className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-xs font-bold shadow-md hover:opacity-90 disabled:opacity-50"><Download size={14} /> PNG</button>
+             <button onClick={handleDownload} disabled={historyStep===0} aria-label="Download PNG" className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-xs font-bold shadow-md hover:opacity-90 disabled:opacity-50"><Download size={14} aria-hidden="true" /> PNG</button>
         </div>
       </div>
       <div className="mt-2 text-center">
           <p className="text-[10px] text-slate-400 flex items-center justify-center gap-1">
-              <Fingerprint size={12} /> Pressure Sensitivity Enabled (Supported Devices)
+              <Fingerprint size={12} aria-hidden="true" /> Pressure Sensitivity Enabled (Supported Devices)
           </p>
       </div>
     </div>

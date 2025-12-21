@@ -48,8 +48,9 @@ const Home: React.FC = () => {
           It contains NO heavy JS, ensuring it paints instantly. */}
       <div className="relative pt-24 pb-36 px-6 text-center animate-fade-in transition-colors duration-300">
         <div className="inline-flex items-center gap-1.5 bg-yellow-50/80 dark:bg-yellow-900/30 border border-yellow-100 dark:border-yellow-800/50 px-4 py-1.5 rounded-full mb-8 shadow-sm backdrop-blur-sm transition-colors">
-          <Star size={14} className="text-yellow-500 fill-yellow-500" />
-          <span className="text-[11px] font-bold text-yellow-700 dark:text-yellow-400 tracking-wide uppercase">Excellent 4.9/5 Average Rating</span>
+          <Star size={14} className="text-yellow-500 fill-yellow-500" aria-hidden="true" />
+          {/* UPDATED CONTRAST: text-yellow-800 for better accessibility against light background */}
+          <span className="text-[11px] font-bold text-yellow-800 dark:text-yellow-400 tracking-wide uppercase">Excellent 4.9/5 Average Rating</span>
         </div>
         
         {/* SEO Optimized H1 */}
@@ -95,7 +96,7 @@ const Home: React.FC = () => {
                     <ul className="space-y-2">
                         {['Vector-quality PNG output', 'Transparent backgrounds', 'Real ink texture simulation'].map((item, i) => (
                             <li key={i} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                                <CheckCircle2 size={14} className="text-blue-500" /> {item}
+                                <CheckCircle2 size={14} className="text-blue-500" aria-hidden="true" /> {item}
                             </li>
                         ))}
                     </ul>
@@ -109,7 +110,7 @@ const Home: React.FC = () => {
                      <ul className="space-y-2">
                         {['No server storage', 'Instant download', 'GDPR & CCPA compliant design'].map((item, i) => (
                             <li key={i} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                                <CheckCircle2 size={14} className="text-green-500" /> {item}
+                                <CheckCircle2 size={14} className="text-green-500" aria-hidden="true" /> {item}
                             </li>
                         ))}
                     </ul>
@@ -131,9 +132,10 @@ const Home: React.FC = () => {
                         key={style.path} 
                         to={style.path}
                         className="group p-4 rounded-xl border border-gray-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 hover:border-blue-200 dark:hover:border-blue-900 hover:shadow-md transition-all text-center"
+                        aria-label={`Explore ${style.name} Style`}
                       >
                           <div className="w-10 h-10 mx-auto bg-white dark:bg-slate-700 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3 group-hover:scale-110 transition-transform">
-                              <PenTool size={18} />
+                              <PenTool size={18} aria-hidden="true" />
                           </div>
                           <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-1">{style.name}</h3>
                           <p className="text-[10px] text-slate-500 dark:text-slate-400">{style.desc}</p>
@@ -152,7 +154,8 @@ const Home: React.FC = () => {
           {/* SEO Styles Footer Block */}
           <div className="py-12 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 transition-colors">
               <div className="max-w-4xl mx-auto text-center px-6">
-                  <h5 className="text-[10px] font-bold tracking-widest text-slate-300 dark:text-slate-600 uppercase mb-6">Supported Fonts in this Handwritten Signature Generator</h5>
+                  {/* UPDATED HIERARCHY: Changed h5 to h3 to allow for correct heading structure (h1 -> h2 -> h3) */}
+                  <h3 className="text-[10px] font-bold tracking-widest text-slate-300 dark:text-slate-600 uppercase mb-6">Supported Fonts in this Handwritten Signature Generator</h3>
                   <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-[10px] text-slate-300 dark:text-slate-600 leading-none">
                       <span>Dr Sugiyama</span>
                       <span>Birthstone Signature</span>

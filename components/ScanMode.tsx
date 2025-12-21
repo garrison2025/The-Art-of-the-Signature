@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, Sliders, Image as ImageIcon, Download, Trash2, Check, RefreshCw, Mail } from 'lucide-react';
+import { Upload, Sliders, Download, Trash2, RefreshCw, Mail } from 'lucide-react';
 import { processScannedImage, downloadDataUrl } from '../utils/canvasUtils';
 
 interface ScanModeProps {
@@ -9,42 +9,28 @@ interface ScanModeProps {
 }
 
 const ScanMode: React.FC<ScanModeProps> = ({ onPreview, onSaveToHistory, onOpenEmailBuilder }) => {
-    const [originalImage, setOriginalImage] = useState<string | null>(null);
     const [processedImage, setProcessedImage] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [threshold, setThreshold] = useState(160);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [file, setFile] = useState<File | null>(null);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setIsProcessing(true);
-            try {
-                // Store original file object URL just to show "Original" if needed, 
-                // but mostly we care about processing it.
-                // Re-run process immediately with default threshold
-                await runProcessing(file, threshold);
-                
-                // Keep file reference in a state if we want to re-process without re-upload? 
-                // For simplicity, we assume we need the file object. 
-                // Let's store the File object in a ref or state to re-process on slider change.
-                setFile(file);
-            } catch (err) {
-                console.error(err);
-                alert("Error processing image. Please try another one.");
-            } finally {
-                setIsProcessing(false);
-            }
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            await runProcessing(selectedFile, threshold);
         }
     };
-
-    const [file, setFile] = useState<File | null>(null);
 
     const runProcessing = async (imgFile: File, thresh: number) => {
         setIsProcessing(true);
         try {
             const dataUrl = await processScannedImage(imgFile, thresh);
             setProcessedImage(dataUrl);
+        } catch (err) {
+            console.error(err);
+            alert("Error processing image.");
         } finally {
             setIsProcessing(false);
         }
@@ -54,7 +40,6 @@ const ScanMode: React.FC<ScanModeProps> = ({ onPreview, onSaveToHistory, onOpenE
         const val = Number(e.target.value);
         setThreshold(val);
         if (file) {
-            // Debounce could be good here, but for now direct call
             await runProcessing(file, val);
         }
     };
@@ -75,7 +60,6 @@ const ScanMode: React.FC<ScanModeProps> = ({ onPreview, onSaveToHistory, onOpenE
     const handleClear = () => {
         setFile(null);
         setProcessedImage(null);
-        setOriginalImage(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
