@@ -1,14 +1,17 @@
 import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { Type, PenTool as DrawIcon, RefreshCw, Plus, ScanLine, FileSignature, Loader2 } from 'lucide-react';
-import TypeMode from './TypeMode';
-import DrawMode from './DrawMode';
+// Remove static imports to split bundle
+// import TypeMode from './TypeMode';
+// import DrawMode from './DrawMode';
 import ContextPreviewModal from './ContextPreviewModal';
 import EmailSignatureModal from './EmailSignatureModal';
 import SignatureHistory from './SignatureHistory';
 import { TabMode, SignatureHistoryItem, SignatureStyle } from '../types';
 import { SIGNATURE_COLORS } from '../constants';
 
-// Lazy load heavy components to split bundle size
+// Lazy load ALL heavy modes
+const TypeMode = React.lazy(() => import('./TypeMode'));
+const DrawMode = React.lazy(() => import('./DrawMode'));
 const ScanMode = React.lazy(() => import('./ScanMode'));
 const SignDocumentMode = React.lazy(() => import('./SignDocumentMode'));
 
