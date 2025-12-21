@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { ArrowLeft, Clock, Calendar, Facebook, Linkedin, Link as LinkIcon, PenTool } from 'lucide-react';
+import { Clock, Calendar, Facebook, Linkedin, Link as LinkIcon, PenTool } from 'lucide-react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { BLOG_POSTS } from '../../data/blogPosts';
 import SEO from '../SEO';
+import Breadcrumbs from '../Breadcrumbs';
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -67,16 +68,10 @@ const BlogPost: React.FC = () => {
       </div>
 
       <div className="max-w-3xl mx-auto px-6 py-12">
-        {/* Nav Back */}
-        <Link 
-            to="/blog"
-            className="group flex items-center text-sm font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white mb-8 transition-colors"
-        >
-            <div className="bg-white dark:bg-slate-800 p-2 rounded-full mr-3 shadow-sm group-hover:-translate-x-1 transition-transform border border-gray-100 dark:border-slate-700">
-                <ArrowLeft size={16} />
-            </div>
-            Back to Blog
-        </Link>
+        <Breadcrumbs items={[
+            { label: 'Blog', path: '/blog' },
+            { label: post.title, path: `/blog/${post.slug}` }
+        ]} />
 
         {/* Header */}
         <header className="mb-10 text-center">
@@ -100,11 +95,14 @@ const BlogPost: React.FC = () => {
         </header>
 
         {/* Cover Image */}
-        <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-lg mb-12">
+        <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-lg mb-12 bg-slate-100 dark:bg-slate-800">
             <img 
                 src={post.coverImage} 
                 alt={post.title}
+                width="800"
+                height="450"
                 className="w-full h-full object-cover"
+                loading="eager"
             />
         </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import SEO from '../SEO';
+import Breadcrumbs from '../Breadcrumbs';
 
 const Privacy: React.FC = () => {
   return (
@@ -10,6 +11,8 @@ const Privacy: React.FC = () => {
         type="article"
       />
       <div className="max-w-3xl mx-auto px-6 py-20 animate-fade-in text-slate-600 dark:text-slate-400 transition-colors duration-300">
+        <Breadcrumbs items={[{ label: 'Privacy Policy', path: '/privacy' }]} />
+        
         <h1 className="text-4xl font-serif text-slate-900 dark:text-white mb-2 transition-colors">Privacy Policy</h1>
         <p className="text-sm text-slate-400 dark:text-slate-500 mb-10 transition-colors">Last Updated: December 5, 2025</p>
 

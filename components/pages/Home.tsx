@@ -3,6 +3,7 @@ import { Star } from 'lucide-react';
 import SignatureGenerator from '../SignatureGenerator';
 import Features from '../Features';
 import HowToUse from '../HowToUse';
+import FAQ from '../FAQ';
 import SEO from '../SEO';
 
 const Home: React.FC = () => {
@@ -39,7 +40,9 @@ const Home: React.FC = () => {
           <span className="text-[11px] font-bold text-yellow-700 dark:text-yellow-400 tracking-wide uppercase">Excellent 4.9/5 Average Rating</span>
         </div>
         
+        {/* SEO Optimized H1: Visually keeps the artistic design, but reads as a keyword-rich H1 to screen readers/bots */}
         <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif text-slate-900 dark:text-white mb-8 tracking-tight transition-colors">
+          <span className="sr-only">Free Handwritten Signature Generator: </span>
           The Art of the <span className="italic text-slate-600 dark:text-slate-400 font-light" style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic' }}>Signature</span>
         </h1>
         
@@ -56,6 +59,7 @@ const Home: React.FC = () => {
       <div className="mt-20">
           <Features />
           <HowToUse />
+          <FAQ />
           
           {/* SEO Styles Footer Block */}
           <div className="py-12 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 transition-colors">
