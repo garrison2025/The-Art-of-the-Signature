@@ -1,17 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Type, PenTool as DrawIcon, RefreshCw, Plus, ScanLine, FileSignature } from 'lucide-react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
+import { Type, PenTool as DrawIcon, RefreshCw, Plus, ScanLine, FileSignature, Loader2 } from 'lucide-react';
 import TypeMode from './TypeMode';
 import DrawMode from './DrawMode';
-import ScanMode from './ScanMode';
-import SignDocumentMode from './SignDocumentMode';
 import ContextPreviewModal from './ContextPreviewModal';
 import EmailSignatureModal from './EmailSignatureModal';
 import SignatureHistory from './SignatureHistory';
-import { TabMode, SignatureHistoryItem } from '../types';
+import { TabMode, SignatureHistoryItem, SignatureStyle } from '../types';
 import { SIGNATURE_COLORS } from '../constants';
 
-const SignatureGenerator: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabMode>('type');
+// Lazy load heavy components to split bundle size
+const ScanMode = React.lazy(() => import('./ScanMode'));
+const SignDocumentMode = React.lazy(() => import('./SignDocumentMode'));
+
+interface SignatureGeneratorProps {
+    initialCategory?: SignatureStyle | 'All';
+    initialTab?: TabMode;
+}
+
+const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory = 'All', initialTab = 'type' }) => {
+  const [activeTab, setActiveTab] = useState<TabMode>(initialTab);
   const [inputText, setInputText] = useState('');
   const [selectedColor, setSelectedColor] = useState(SIGNATURE_COLORS[0].hex);
   const colorInputRef = useRef<HTMLInputElement>(null);
@@ -210,35 +217,43 @@ const SignatureGenerator: React.FC = () => {
 
         {/* Content Area */}
         <div id="style-controls" className={`p-8 min-h-[400px] transition-colors duration-300 ${activeTab === 'type' ? 'bg-slate-50/50 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'}`}>
-          {activeTab === 'type' && (
-            <TypeMode 
-                text={inputText} 
-                color={selectedColor} 
-                onPreview={handlePreview}
-                onSaveToHistory={handleSaveToHistory}
-                onOpenEmailBuilder={handleOpenEmailBuilder}
-            />
-          )}
-          {activeTab === 'draw' && (
-            <DrawMode 
-                color={selectedColor} 
-                onPreview={handlePreview}
-                onSaveToHistory={handleSaveToHistory}
-                onOpenEmailBuilder={handleOpenEmailBuilder}
-            />
-          )}
-          {activeTab === 'scan' && (
-            <ScanMode 
-                onPreview={handlePreview}
-                onSaveToHistory={handleSaveToHistory}
-                onOpenEmailBuilder={handleOpenEmailBuilder}
-            />
-          )}
-           {activeTab === 'sign-pdf' && (
-            <SignDocumentMode 
-                signatureDataUrl={currentGeneratedSignature}
-            />
-          )}
+          <Suspense fallback={
+              <div className="flex flex-col items-center justify-center h-[300px] text-slate-400">
+                  <Loader2 className="animate-spin mb-4" size={32} />
+                  <p>Loading tools...</p>
+              </div>
+          }>
+            {activeTab === 'type' && (
+                <TypeMode 
+                    text={inputText} 
+                    color={selectedColor} 
+                    onPreview={handlePreview}
+                    onSaveToHistory={handleSaveToHistory}
+                    onOpenEmailBuilder={handleOpenEmailBuilder}
+                    initialCategory={initialCategory}
+                />
+            )}
+            {activeTab === 'draw' && (
+                <DrawMode 
+                    color={selectedColor} 
+                    onPreview={handlePreview}
+                    onSaveToHistory={handleSaveToHistory}
+                    onOpenEmailBuilder={handleOpenEmailBuilder}
+                />
+            )}
+            {activeTab === 'scan' && (
+                <ScanMode 
+                    onPreview={handlePreview}
+                    onSaveToHistory={handleSaveToHistory}
+                    onOpenEmailBuilder={handleOpenEmailBuilder}
+                />
+            )}
+            {activeTab === 'sign-pdf' && (
+                <SignDocumentMode 
+                    signatureDataUrl={currentGeneratedSignature}
+                />
+            )}
+           </Suspense>
 
           <div id="history-section">
              <SignatureHistory history={history} onClear={handleClearHistory} />

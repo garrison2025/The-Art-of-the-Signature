@@ -29,7 +29,11 @@ const SignatureHistory: React.FC<SignatureHistoryProps> = ({ history, onClear })
             <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
                 {history.map((item) => (
                     <div key={item.id} className="flex-shrink-0 group relative bg-white dark:bg-slate-800 rounded-lg border border-gray-100 dark:border-slate-700 w-48 h-28 flex items-center justify-center p-2">
-                        <img src={item.dataUrl} alt="Signature" className="max-w-full max-h-full opacity-80 group-hover:opacity-100 transition-opacity" />
+                        <img 
+                            src={item.dataUrl} 
+                            alt={`Previously generated ${item.type} signature for ${item.label}`}
+                            className="max-w-full max-h-full opacity-80 group-hover:opacity-100 transition-opacity" 
+                        />
                         
                         <div className="absolute top-2 left-2">
                             <span className="text-[9px] uppercase font-bold text-slate-300 bg-slate-100 dark:bg-slate-700 dark:text-slate-500 px-1.5 py-0.5 rounded">

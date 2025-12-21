@@ -10,6 +10,7 @@ import Terms from './components/pages/Terms';
 import BlogList from './components/pages/BlogList';
 import BlogPost from './components/pages/BlogPost';
 import NotFound from './components/pages/NotFound';
+import StyleLandingPage from './components/pages/StyleLandingPage';
 import OnboardingTour from './components/OnboardingTour';
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/style/:slug" element={<StyleLandingPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

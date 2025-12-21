@@ -11,9 +11,10 @@ interface TypeModeProps {
   onPreview: (dataUrl: string) => void;
   onSaveToHistory: (dataUrl: string) => void;
   onOpenEmailBuilder: (dataUrl: string) => void;
+  initialCategory?: SignatureStyle | 'All';
 }
 
-const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHistory, onOpenEmailBuilder }) => {
+const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHistory, onOpenEmailBuilder, initialCategory = 'All' }) => {
   const [useInitials, setUseInitials] = useState(false);
   
   const getInitials = (str: string) => {
@@ -35,7 +36,7 @@ const TypeMode: React.FC<TypeModeProps> = ({ text, color, onPreview, onSaveToHis
   const [bgColor, setBgColor] = useState<'transparent' | '#ffffff' | '#000000'>('transparent');
   
   // Filtering
-  const [activeCategory, setActiveCategory] = useState<SignatureStyle | 'All'>('All');
+  const [activeCategory, setActiveCategory] = useState<SignatureStyle | 'All'>(initialCategory);
 
   const getConfig = (): TypeSignatureConfig => ({
         text: displayText,

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Star } from 'lucide-react';
+import { Star, ArrowRight, PenTool } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SignatureGenerator from '../SignatureGenerator';
 import Features from '../Features';
 import HowToUse from '../HowToUse';
@@ -24,6 +25,14 @@ const Home: React.FC = () => {
         "ratingCount": "1250"
     }
   };
+
+  const styles = [
+      { name: 'Handwriting', path: '/style/handwriting-signature-generator', desc: 'Natural pen-on-paper look' },
+      { name: 'Cursive', path: '/style/cursive-signature-generator', desc: 'Flowing & professional' },
+      { name: 'Calligraphy', path: '/style/calligraphy-signature-generator', desc: 'Elegant & formal' },
+      { name: 'Wet Ink', path: '/style/wet-ink-signature-generator', desc: 'Realistic texture' },
+      { name: 'Autograph', path: '/style/autograph-maker', desc: 'Unique personal mark' },
+  ];
 
   return (
     <>
@@ -55,8 +64,33 @@ const Home: React.FC = () => {
       {/* Generator Tool */}
       <SignatureGenerator />
 
+      {/* Internal Linking / Style Explorer Section */}
+      <section className="py-16 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800">
+          <div className="max-w-6xl mx-auto px-6">
+              <div className="text-center mb-10">
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white mb-2">Explore Signature Styles</h2>
+                  <p className="text-slate-500 text-sm">Find the perfect aesthetic for your digital identity.</p>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  {styles.map((style) => (
+                      <Link 
+                        key={style.path} 
+                        to={style.path}
+                        className="group p-4 rounded-xl border border-gray-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 hover:border-blue-200 dark:hover:border-blue-900 hover:shadow-md transition-all text-center"
+                      >
+                          <div className="w-10 h-10 mx-auto bg-white dark:bg-slate-700 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3 group-hover:scale-110 transition-transform">
+                              <PenTool size={18} />
+                          </div>
+                          <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-1">{style.name}</h3>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">{style.desc}</p>
+                      </Link>
+                  ))}
+              </div>
+          </div>
+      </section>
+
       {/* Informational Sections */}
-      <div className="mt-20">
+      <div className="">
           <Features />
           <HowToUse />
           <FAQ />
@@ -64,7 +98,7 @@ const Home: React.FC = () => {
           {/* SEO Styles Footer Block */}
           <div className="py-12 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 transition-colors">
               <div className="max-w-4xl mx-auto text-center px-6">
-                  <h5 className="text-[10px] font-bold tracking-widest text-slate-300 dark:text-slate-600 uppercase mb-6">Supported Signature Styles</h5>
+                  <h5 className="text-[10px] font-bold tracking-widest text-slate-300 dark:text-slate-600 uppercase mb-6">Supported Fonts & Styles</h5>
                   <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-[10px] text-slate-300 dark:text-slate-600 leading-none">
                       <span>Dr Sugiyama</span>
                       <span>Birthstone Signature</span>

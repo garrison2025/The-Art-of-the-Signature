@@ -361,6 +361,8 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
       <div ref={containerRef} className="relative bg-white dark:bg-white rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm overflow-hidden touch-none" style={{ backgroundImage: 'radial-gradient(#e2e8f0 1.5px, transparent 1.5px)', backgroundSize: '24px 24px', backgroundColor: bgColor === 'transparent' ? '#ffffff' : bgColor }}>
         <canvas 
             ref={canvasRef} 
+            role="img"
+            aria-label="Drawing canvas for custom signature. Use touch or mouse to draw."
             onPointerDown={handlePointerDown} 
             onPointerMove={handlePointerMove} 
             onPointerUp={handlePointerUp} 

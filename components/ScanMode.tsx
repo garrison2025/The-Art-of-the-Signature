@@ -79,12 +79,22 @@ const ScanMode: React.FC<ScanModeProps> = ({ onPreview, onSaveToHistory, onOpenE
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            fileInputRef.current?.click();
+        }
+    };
+
     return (
         <div className="w-full animate-fade-in">
             {!processedImage ? (
                 // Upload State
                 <div 
-                    className="border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-2xl p-12 text-center bg-gray-50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Upload a photo of your handwritten signature"
+                    onKeyDown={handleKeyDown}
+                    className="border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-2xl p-12 text-center bg-gray-50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
                     onClick={() => fileInputRef.current?.click()}
                 >
                     <input 
@@ -111,22 +121,24 @@ const ScanMode: React.FC<ScanModeProps> = ({ onPreview, onSaveToHistory, onOpenE
                      {/* Toolbar */}
                     <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-4 w-full md:w-auto">
-                            <div className="flex items-center gap-2 text-slate-500">
+                            <label htmlFor="contrast-slider" className="flex items-center gap-2 text-slate-500">
                                 <Sliders size={18} />
                                 <span className="text-xs font-bold uppercase">Contrast / Threshold</span>
-                            </div>
+                            </label>
                             <input 
+                                id="contrast-slider"
                                 type="range" 
                                 min="50" 
                                 max="230" 
                                 value={threshold} 
+                                aria-label="Adjust contrast threshold"
                                 onChange={handleThresholdChange}
                                 className="flex-1 md:w-48 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-slate-900 dark:accent-white"
                             />
                         </div>
 
                         <div className="flex items-center gap-2">
-                             <button onClick={handleClear} className="p-2 text-slate-400 hover:text-rose-500 transition-colors" title="Remove">
+                             <button onClick={handleClear} className="p-2 text-slate-400 hover:text-rose-500 transition-colors" title="Remove" aria-label="Remove image and start over">
                                 <Trash2 size={20} />
                             </button>
                         </div>
@@ -145,7 +157,7 @@ const ScanMode: React.FC<ScanModeProps> = ({ onPreview, onSaveToHistory, onOpenE
                                 <span className="text-sm">Processing...</span>
                             </div>
                         ) : (
-                            <img src={processedImage} alt="Processed Signature" className="max-w-full max-h-[400px]" />
+                            <img src={processedImage} alt="Processed Digital Signature with Background Removed" className="max-w-full max-h-[400px]" />
                         )}
                     </div>
 

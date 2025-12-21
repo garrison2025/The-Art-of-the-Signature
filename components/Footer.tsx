@@ -24,41 +24,35 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="col-span-1">
-            <h4 className="font-serif font-bold text-slate-900 dark:text-white mb-4 text-sm transition-colors">Product</h4>
+            <h4 className="font-serif font-bold text-slate-900 dark:text-white mb-4 text-sm transition-colors">Popular Styles</h4>
             <ul className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-              <li><Link to="/" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Signature Generator</Link></li>
+              <li><Link to="/style/handwriting-signature-generator" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Handwriting Generator</Link></li>
+              <li><Link to="/style/cursive-signature-generator" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Cursive Signature</Link></li>
+              <li><Link to="/style/calligraphy-signature-generator" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Calligraphy Maker</Link></li>
+              <li><Link to="/style/wet-ink-signature-generator" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Wet Ink Style</Link></li>
+              <li><Link to="/style/autograph-maker" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Autograph Maker</Link></li>
+            </ul>
+          </div>
+
+          <div className="col-span-1">
+            <h4 className="font-serif font-bold text-slate-900 dark:text-white mb-4 text-sm transition-colors">Resources</h4>
+            <ul className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
               <li><Link to="/blog" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Blog & Guides</Link></li>
-              <li><Link to="/" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Email Signatures</Link></li>
+              <li><Link to="/about" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">About Us</Link></li>
+              <li><Link to="/contact" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Contact Support</Link></li>
+              <li><Link to="/privacy" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Terms of Service</Link></li>
             </ul>
           </div>
 
           <div className="col-span-1">
             <h4 className="font-serif font-bold text-slate-900 dark:text-white mb-4 text-sm transition-colors">Company</h4>
-            <ul className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-              <li><Link to="/about" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">About Us</Link></li>
-              <li><Link to="/contact" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Contact</Link></li>
-            </ul>
-          </div>
-
-          <div className="col-span-1">
-            <h4 className="font-serif font-bold text-slate-900 dark:text-white mb-4 text-sm transition-colors">Legal</h4>
-            <ul className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-              <li><Link to="/privacy" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">Terms & Conditions</Link></li>
-            </ul>
-          </div>
-
-        </div>
-
-        <div className="border-t border-gray-100 dark:border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-slate-400 dark:text-slate-600 transition-colors">
-          <p>© 2025 handwrittensignaturegenerator.org. All rights reserved.</p>
-          <div className="flex gap-4">
-             {/* Supported styles listing for SEO */}
-             <span>Dr Sugiyama</span>
-             <span className="hidden md:inline">·</span>
-             <span>Dancing Script</span>
-             <span className="hidden md:inline">·</span>
-             <span>WindSong</span>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+               SignCraft is a privacy-first, client-side signature tool. We do not store your data.
+            </p>
+            <div className="text-xs text-slate-400">
+                &copy; {new Date().getFullYear()} SignCraft.
+            </div>
           </div>
         </div>
       </div>

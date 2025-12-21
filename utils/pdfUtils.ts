@@ -2,7 +2,8 @@ import * as pdfjsLib from 'pdfjs-dist';
 import { PDFDocument } from 'pdf-lib';
 
 // Configure worker for PDF.js (Critical for avoiding errors in ESM environment)
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+// Updated to match index.html version (5.4.449) to prevent version mismatch errors
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@5.4.449/build/pdf.worker.min.js';
 
 /**
  * Renders a specific page of a PDF file to a base64 image (for preview)
