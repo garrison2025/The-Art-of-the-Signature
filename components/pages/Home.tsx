@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, ArrowRight, PenTool } from 'lucide-react';
+import { Star, ArrowRight, PenTool, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SignatureGenerator from '../SignatureGenerator';
 import Features from '../Features';
@@ -37,8 +37,8 @@ const Home: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Free Handwritten Signature Generator" 
-        description="Create a professional handwritten signature online. Free, secure, and no sign-up required. Download as PNG or sign PDFs directly."
+        title="Free Handwritten Signature Generator | Create Digital Signatures" 
+        description="Use the #1 rated handwritten signature generator to create professional digital signatures. Free, secure, and customizable styles for PDFs and emails."
         schema={schema}
       />
       
@@ -49,26 +49,68 @@ const Home: React.FC = () => {
           <span className="text-[11px] font-bold text-yellow-700 dark:text-yellow-400 tracking-wide uppercase">Excellent 4.9/5 Average Rating</span>
         </div>
         
-        {/* SEO Optimized H1: Visually keeps the artistic design, but reads as a keyword-rich H1 to screen readers/bots */}
+        {/* SEO Optimized H1 */}
         <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif text-slate-900 dark:text-white mb-8 tracking-tight transition-colors">
           <span className="sr-only">Free Handwritten Signature Generator: </span>
           The Art of the <span className="italic text-slate-600 dark:text-slate-400 font-light" style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic' }}>Signature</span>
         </h1>
         
         <p className="max-w-2xl mx-auto text-slate-500 dark:text-slate-400 text-lg leading-relaxed mb-8 transition-colors">
-          Experience the most realistic <strong className="text-slate-700 dark:text-slate-200 font-medium">handwritten signature generator</strong> online.<br className="hidden md:block"/>
-          Create a professional, secure digital mark in seconds.
+          Create a professional digital mark with the most realistic <strong className="text-slate-700 dark:text-slate-200 font-medium">handwritten signature generator</strong>. 
+          <span className="hidden md:inline"> Customize fonts, slant, and ink texture to design a signature that is uniquely yours.</span>
         </p>
       </div>
 
       {/* Generator Tool */}
       <SignatureGenerator />
 
+      {/* SEO Content Block: High Keyword Density Section */}
+      <section className="py-20 bg-slate-50 dark:bg-slate-900/50 border-y border-gray-100 dark:border-slate-800">
+        <div className="max-w-4xl mx-auto px-6">
+            <div className="text-center mb-12">
+                <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-6">Why Choose Our Handwritten Signature Generator?</h2>
+                <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+                    In a digital-first world, typing your name isn't enough. Our <strong>handwritten signature generator</strong> bridges the gap between traditional penmanship and modern digital security.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="prose prose-slate dark:prose-invert">
+                    <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">Authentic Digital Identity</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                        Unlike basic tools, this <strong>handwritten signature generator</strong> uses advanced vector algorithms to simulate the pressure, velocity, and flow of real ink. Whether you need a cursive autograph or a bold executive scrawl, our tool creates a unique identity asset.
+                    </p>
+                    <ul className="space-y-2">
+                        {['Vector-quality PNG output', 'Transparent backgrounds', 'Real ink texture simulation'].map((item, i) => (
+                            <li key={i} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                                <CheckCircle2 size={14} className="text-blue-500" /> {item}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div className="prose prose-slate dark:prose-invert">
+                    <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">Secure & Client-Side</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                        Most online tools upload your data. Our <strong>handwritten signature generator</strong> is different—it runs 100% in your browser. Your personal signature never leaves your device, making it the safest choice for signing contracts, NDAs, and legal documents.
+                    </p>
+                     <ul className="space-y-2">
+                        {['No server storage', 'Instant download', 'GDPR & CCPA compliant design'].map((item, i) => (
+                            <li key={i} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                                <CheckCircle2 size={14} className="text-green-500" /> {item}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        </div>
+      </section>
+
       {/* Internal Linking / Style Explorer Section */}
-      <section className="py-16 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800">
+      <section className="py-16 bg-white dark:bg-slate-900">
           <div className="max-w-6xl mx-auto px-6">
               <div className="text-center mb-10">
-                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white mb-2">Explore Signature Styles</h2>
+                  <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-white mb-2">Explore Styles in our Handwritten Signature Generator</h2>
                   <p className="text-slate-500 text-sm">Find the perfect aesthetic for your digital identity.</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -98,7 +140,7 @@ const Home: React.FC = () => {
           {/* SEO Styles Footer Block */}
           <div className="py-12 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 transition-colors">
               <div className="max-w-4xl mx-auto text-center px-6">
-                  <h5 className="text-[10px] font-bold tracking-widest text-slate-300 dark:text-slate-600 uppercase mb-6">Supported Fonts & Styles</h5>
+                  <h5 className="text-[10px] font-bold tracking-widest text-slate-300 dark:text-slate-600 uppercase mb-6">Supported Fonts in this Handwritten Signature Generator</h5>
                   <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-[10px] text-slate-300 dark:text-slate-600 leading-none">
                       <span>Dr Sugiyama</span>
                       <span>Birthstone Signature</span>

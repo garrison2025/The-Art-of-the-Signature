@@ -6,10 +6,10 @@ const Features: React.FC = () => {
     <section id="features" className="py-20 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-6">
         <div className="mb-12">
-            <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-4 transition-colors">Why Use a Handwritten Signature Generator?</h2>
+            <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-4 transition-colors">Benefits of using a Handwritten Signature Generator</h2>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl transition-colors">
                 In the digital age, a professional online signature is essential for branding. 
-                SignCraft offers a free, secure, and artistically refined solution.
+                Our <strong>handwritten signature generator</strong> offers a free, secure, and artistically refined solution for your documents.
             </p>
         </div>
 
@@ -19,9 +19,9 @@ const Features: React.FC = () => {
                 <ShieldCheck size={24} strokeWidth={1.5} />
             </div>
             <div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1 transition-colors">Secure & Private</h3>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1 transition-colors">Secure & Private Generator</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed transition-colors">
-                    Operates entirely in your browser (Client-Side), ensuring zero data leaks. Your signature is never uploaded to a server.
+                    Our <strong>handwritten signature generator</strong> operates entirely in your browser (Client-Side). Your signature data is never uploaded to a server, ensuring zero leaks.
                 </p>
             </div>
           </div>
@@ -33,7 +33,7 @@ const Features: React.FC = () => {
             <div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1 transition-colors">Instant Vector Export</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed transition-colors">
-                    Download high-resolution PNGs directly for professional printing, signing PDFs, or email signatures.
+                    Download high-resolution PNGs directly from the <strong>handwritten signature generator</strong> for professional printing, signing PDFs, or email signatures.
                 </p>
             </div>
           </div>
@@ -45,7 +45,7 @@ const Features: React.FC = () => {
             <div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1 transition-colors">Natural Ink Technology</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed transition-colors">
-                    Our font engine simulates real ink velocity and pressure for an authentic feel, distinguishing it from generic text.
+                    This <strong>handwritten signature generator</strong> uses a custom font engine to simulate real ink velocity and pressure for an authentic feel, distinguishing it from generic text.
                 </p>
             </div>
           </div>
