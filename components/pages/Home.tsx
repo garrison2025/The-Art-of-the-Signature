@@ -1,11 +1,13 @@
-import React from 'react';
-import { Star, ArrowRight, PenTool, CheckCircle2 } from 'lucide-react';
+import React, { Suspense } from 'react';
+import { Star, PenTool, CheckCircle2, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import SignatureGenerator from '../SignatureGenerator';
 import Features from '../Features';
 import HowToUse from '../HowToUse';
 import FAQ from '../FAQ';
 import SEO from '../SEO';
+
+// Lazy load the heavy interactive component
+const SignatureGenerator = React.lazy(() => import('../SignatureGenerator'));
 
 const Home: React.FC = () => {
   const schema = {
@@ -42,7 +44,8 @@ const Home: React.FC = () => {
         schema={schema}
       />
       
-      {/* Hero Section */}
+      {/* Hero Section - This is LCP (Largest Contentful Paint). 
+          It contains NO heavy JS, ensuring it paints instantly. */}
       <div className="relative pt-24 pb-36 px-6 text-center animate-fade-in transition-colors duration-300">
         <div className="inline-flex items-center gap-1.5 bg-yellow-50/80 dark:bg-yellow-900/30 border border-yellow-100 dark:border-yellow-800/50 px-4 py-1.5 rounded-full mb-8 shadow-sm backdrop-blur-sm transition-colors">
           <Star size={14} className="text-yellow-500 fill-yellow-500" />
@@ -61,8 +64,17 @@ const Home: React.FC = () => {
         </p>
       </div>
 
-      {/* Generator Tool */}
-      <SignatureGenerator />
+      {/* Generator Tool - Lazy Loaded */}
+      <div className="min-h-[600px]">
+        <Suspense fallback={
+          <div className="max-w-6xl mx-auto px-4 h-[500px] flex flex-col items-center justify-center bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800">
+             <Loader2 className="animate-spin text-slate-300 mb-4" size={32} />
+             <p className="text-slate-400 text-sm">Loading generator tools...</p>
+          </div>
+        }>
+          <SignatureGenerator />
+        </Suspense>
+      </div>
 
       {/* SEO Content Block: High Keyword Density Section */}
       <section className="py-20 bg-slate-50 dark:bg-slate-900/50 border-y border-gray-100 dark:border-slate-800">

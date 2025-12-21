@@ -13,10 +13,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- CRITICAL FONTS ONLY: Load immediately (Blocking) 
-         We ONLY load the UI font (Inter), Heading font (Playfair), and the DEFAULT signature font (Dr Sugiyama).
-         All other 40+ fonts are now loaded via JavaScript in App.tsx to avoid blocking LCP on mobile. -->
-    <link href="https://fonts.googleapis.com/css2?family=Dr+Sugiyama&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <!-- CRITICAL FONTS ONLY: 
+         - Inter: UI Font (Weights 400, 500)
+         - Playfair Display: Hero Heading (Weights 400, 700, 400italic)
+         - REMOVED Dr Sugiyama (Loaded later via JS now) 
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
     <script type="importmap">
 {
@@ -41,7 +43,41 @@
 </script>
 </head>
   <body>
-    <div id="root"></div>
+    <!-- APP SHELL: Static HTML that matches Home.tsx for instant LCP -->
+    <div id="root">
+      <div class="min-h-screen bg-[#f8f9fa] font-sans flex flex-col justify-between">
+        <!-- Static Header -->
+        <header class="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2">
+              <div class="bg-slate-900 text-white p-1.5 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+              </div>
+              <span class="font-serif text-xl font-bold text-slate-900 tracking-tight">SignCraft</span>
+            </a>
+          </div>
+        </header>
+        
+        <main class="flex-grow">
+          <!-- Static Hero Section (LCP Element) -->
+          <div class="relative pt-24 pb-36 px-6 text-center">
+            <div class="inline-flex items-center gap-1.5 bg-yellow-50/80 border border-yellow-100 px-4 py-1.5 rounded-full mb-8 shadow-sm">
+               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#EAB308" stroke="#EAB308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+               <span class="text-[11px] font-bold text-yellow-700 tracking-wide uppercase">Excellent 4.9/5 Average Rating</span>
+            </div>
+            
+            <h1 class="text-6xl md:text-7xl lg:text-8xl font-serif text-slate-900 mb-8 tracking-tight">
+              The Art of the <span class="italic text-slate-600 font-light" style="font-family: 'Playfair Display', serif; font-style: italic;">Signature</span>
+            </h1>
+            
+            <p class="max-w-2xl mx-auto text-slate-500 text-lg leading-relaxed mb-8">
+              Create a professional digital mark with the most realistic <strong class="text-slate-700 font-medium">handwritten signature generator</strong>.
+            </p>
+          </div>
+        </main>
+      </div>
+    </div>
+
     <script type="module" src="/index.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {

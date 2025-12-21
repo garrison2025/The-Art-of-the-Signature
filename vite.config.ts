@@ -10,7 +10,8 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
           pdf: ['pdfjs-dist', 'pdf-lib'],
-          ui: ['lucide-react', 'driver.js']
+          // Removed driver.js from here so it can be truly lazy loaded via React.lazy in App.tsx
+          ui: ['lucide-react'] 
         }
       }
     }
