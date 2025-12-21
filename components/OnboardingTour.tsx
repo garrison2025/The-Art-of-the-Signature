@@ -31,7 +31,7 @@ const OnboardingTour: React.FC = () => {
             } 
           },
           { 
-            element: '#style-controls', 
+            element: '.style-controls-panel', 
             popover: { 
               title: 'Customize Styles', 
               description: 'Adjust slant, weight, and spacing. Toggle "Ink Texture" for realistic grunge effects.',

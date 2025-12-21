@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 const FontLoader: React.FC = () => {
   useEffect(() => {
     // BATCH 1: High Priority - The first 8 fonts visible in the default "All" grid.
-    // Loading only these initially drastically reduces the "Network Request Chain" length and LCP delay.
+    // Increased delay to 1500ms to allow LCP to finish first.
     const priorityFonts = [
       'Dr+Sugiyama',
       'Comforter+Brush',
@@ -37,17 +37,16 @@ const FontLoader: React.FC = () => {
       document.head.appendChild(link);
     };
 
-    // Load Batch 1 immediately (but non-blocking via setTimeout 0)
+    // Load Batch 1 delayed to break network chain
     setTimeout(() => {
         loadFontBatch(priorityFonts);
-    }, 0);
+    }, 1500);
 
-    // Load Batch 2 after 3 seconds (when user is likely scrolling or reading)
-    // This moves the heavy network requests out of the initial load performance window.
+    // Load Batch 2 significantly later
     if ('requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(() => loadFontBatch(secondaryFonts), { timeout: 4000 });
+      (window as any).requestIdleCallback(() => loadFontBatch(secondaryFonts), { timeout: 5000 });
     } else {
-      setTimeout(() => loadFontBatch(secondaryFonts), 3500);
+      setTimeout(() => loadFontBatch(secondaryFonts), 4500);
     }
   }, []);
 

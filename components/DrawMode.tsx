@@ -350,10 +350,11 @@ const DrawMode: React.FC<DrawModeProps> = ({ color, onPreview, onSaveToHistory, 
            <div className="flex flex-wrap gap-2 items-center">
                 <button onClick={() => setShowPreviewLine(!showPreviewLine)} className={`text-xs font-medium px-3 py-1.5 rounded-lg border transition-all ${showPreviewLine ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 text-blue-700 dark:text-blue-300' : 'border-transparent text-slate-500'}`}>Sign Line</button>
                 <button onClick={() => setTrim(!trim)} className={`text-xs font-medium px-3 py-1.5 rounded-lg border transition-all ${trim ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 text-blue-700 dark:text-blue-300' : 'border-transparent text-slate-500'}`}>Auto-Trim</button>
-                 <div className="flex items-center gap-1 bg-gray-100 dark:bg-slate-900 p-1 rounded-lg">
-                    <button onClick={() => setBgColor('transparent')} aria-label="Transparent background" className={`w-5 h-5 rounded border ${bgColor === 'transparent' ? 'border-gray-400' : 'border-transparent opacity-50'}`}><div className="w-full h-full bg-gray-300 rounded-sm opacity-50"></div></button>
-                    <button onClick={() => setBgColor('#ffffff')} aria-label="White background" className={`w-5 h-5 rounded border bg-white ${bgColor === '#ffffff' ? 'border-gray-400' : 'border-transparent opacity-50'}`}></button>
-                    <button onClick={() => setBgColor('#000000')} aria-label="Black background" className={`w-5 h-5 rounded border bg-black ${bgColor === '#000000' ? 'border-gray-400' : 'border-transparent opacity-50'}`}></button>
+                 <div className="flex items-center gap-2 bg-gray-100 dark:bg-slate-900 p-1.5 rounded-lg">
+                    {/* UPDATED: Increased button sizes to 40px (w-10 h-10) */}
+                    <button onClick={() => setBgColor('transparent')} aria-label="Transparent background" className={`w-10 h-10 rounded-md border ${bgColor === 'transparent' ? 'border-gray-400' : 'border-transparent opacity-50'}`}><div className="w-full h-full bg-gray-300 rounded-sm opacity-50"></div></button>
+                    <button onClick={() => setBgColor('#ffffff')} aria-label="White background" className={`w-10 h-10 rounded-md border bg-white ${bgColor === '#ffffff' ? 'border-gray-400' : 'border-transparent opacity-50'}`}></button>
+                    <button onClick={() => setBgColor('#000000')} aria-label="Black background" className={`w-10 h-10 rounded-md border bg-black ${bgColor === '#000000' ? 'border-gray-400' : 'border-transparent opacity-50'}`}></button>
                 </div>
            </div>
       </div>

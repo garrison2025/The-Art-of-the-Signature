@@ -8,6 +8,7 @@ interface SEOProps {
   type?: 'website' | 'article';
   image?: string;
   schema?: object;
+  ignoreSiteName?: boolean;
 }
 
 const SEO: React.FC<SEOProps> = ({ 
@@ -16,10 +17,11 @@ const SEO: React.FC<SEOProps> = ({
   canonicalUrl, 
   type = 'website', 
   image = 'https://handwrittensignaturegenerator.org/icon-512.png',
-  schema
+  schema,
+  ignoreSiteName = false
 }) => {
   const siteName = 'SignCraft';
-  const fullTitle = `${title} | ${siteName}`;
+  const fullTitle = ignoreSiteName ? title : `${title} | ${siteName}`;
   const currentUrl = canonicalUrl || typeof window !== 'undefined' ? window.location.href : '';
 
   return (

@@ -251,13 +251,14 @@ const SignDocumentMode: React.FC<SignDocumentModeProps> = ({ signatureDataUrl })
                     <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                         <FileText size={32} aria-hidden="true" />
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Upload PDF Document</h3>
+                    {/* Fixed: Changed h3 to div to ensure ARIA validity inside button-role */}
+                    <div className="text-xl font-bold text-slate-900 dark:text-white mb-2">Upload PDF Document</div>
                     <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
                         Select a PDF file from your computer. We'll render it securely in your browser so you can place your signature.
                     </p>
-                    <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-lg font-bold hover:opacity-90 transition-opacity">
+                    <span className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-lg font-bold hover:opacity-90 transition-opacity inline-block">
                         Select PDF
-                    </button>
+                    </span>
                 </div>
             ) : (
                 // Editor State

@@ -39,9 +39,10 @@ const Home: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Free Handwritten Signature Generator | Create Digital Signatures" 
+        title="Free Handwritten Signature Generator" 
         description="Use the #1 rated handwritten signature generator to create professional digital signatures. Free, secure, and customizable styles for PDFs and emails."
         schema={schema}
+        ignoreSiteName={true}
       />
       
       {/* Hero Section - This is LCP (Largest Contentful Paint). 
@@ -49,8 +50,8 @@ const Home: React.FC = () => {
       <div className="relative pt-24 pb-36 px-6 text-center animate-fade-in transition-colors duration-300">
         <div className="inline-flex items-center gap-1.5 bg-yellow-50/80 dark:bg-yellow-900/30 border border-yellow-100 dark:border-yellow-800/50 px-4 py-1.5 rounded-full mb-8 shadow-sm backdrop-blur-sm transition-colors">
           <Star size={14} className="text-yellow-500 fill-yellow-500" aria-hidden="true" />
-          {/* UPDATED CONTRAST: text-yellow-800 for better accessibility against light background */}
-          <span className="text-[11px] font-bold text-yellow-800 dark:text-yellow-400 tracking-wide uppercase">Excellent 4.9/5 Average Rating</span>
+          {/* UPDATED CONTRAST: Use custom hex or slate-900 equivalent for high contrast. #713f12 is safe on light yellow. */}
+          <span className="text-[11px] font-bold text-[#713f12] dark:text-yellow-400 tracking-wide uppercase">Excellent 4.9/5 Average Rating</span>
         </div>
         
         {/* SEO Optimized H1 */}

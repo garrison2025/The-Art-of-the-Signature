@@ -104,8 +104,8 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
     <div className="max-w-6xl mx-auto px-4 sm:px-6 relative -mt-10 z-10 mb-20">
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 overflow-hidden transition-colors duration-300">
         
-        {/* Tabs */}
-        <div id="generator-tabs" className="flex border-b border-gray-100 dark:border-slate-800 overflow-x-auto">
+        {/* Tabs - Added role="tablist" for accessibility */}
+        <div id="generator-tabs" className="flex border-b border-gray-100 dark:border-slate-800 overflow-x-auto" role="tablist">
           <button
             onClick={() => setActiveTab('type')}
             className={`flex-1 min-w-[100px] py-6 text-sm font-bold flex items-center justify-center gap-2 transition-all relative
@@ -113,6 +113,8 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
             aria-label="Switch to Type Mode"
             aria-selected={activeTab === 'type'}
             role="tab"
+            id="tab-type"
+            aria-controls="panel-type"
           >
             <Type size={18} aria-hidden="true" />
             Type
@@ -127,6 +129,8 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
             aria-label="Switch to Draw Mode"
             aria-selected={activeTab === 'draw'}
             role="tab"
+            id="tab-draw"
+            aria-controls="panel-draw"
           >
             <DrawIcon size={18} aria-hidden="true" />
             Draw
@@ -141,6 +145,8 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
             aria-label="Switch to Scan Mode"
             aria-selected={activeTab === 'scan'}
             role="tab"
+            id="tab-scan"
+            aria-controls="panel-scan"
           >
             <ScanLine size={18} aria-hidden="true" />
             Scan
@@ -155,6 +161,8 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
             aria-label="Switch to PDF Signing Mode"
             aria-selected={activeTab === 'sign-pdf'}
             role="tab"
+            id="tab-sign-pdf"
+            aria-controls="panel-sign-pdf"
           >
             <FileSignature size={18} aria-hidden="true" />
             Sign PDF
@@ -171,7 +179,7 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
           {/* Color Picker */}
           {activeTab !== 'scan' && (
             <div className="flex justify-center mb-10" id="color-picker">
-                <div className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-1.5 rounded-full shadow-sm transition-colors">
+                <div className="flex items-center gap-3 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-2 rounded-full shadow-sm transition-colors">
                     {SIGNATURE_COLORS.map((color) => (
                     <button
                         key={color.name}
@@ -227,7 +235,7 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
                     <button 
                         onClick={() => setInputText('')} 
                         aria-label="Clear text" 
-                        className="text-slate-400 dark:text-slate-500"
+                        className="p-2 text-slate-400 dark:text-slate-500"
                     >
                         <RefreshCw size={20} aria-hidden="true" />
                     </button>
@@ -239,7 +247,7 @@ const SignatureGenerator: React.FC<SignatureGeneratorProps> = ({ initialCategory
         )}
 
         {/* Content Area */}
-        <div id="style-controls" className={`p-8 min-h-[400px] transition-colors duration-300 ${activeTab === 'type' ? 'bg-slate-50/50 dark:bg-slate-900' : 'bg-white dark:bg-slate-900'}`}>
+        <div className={`style-controls-panel p-8 min-h-[400px] transition-colors duration-300 ${activeTab === 'type' ? 'bg-slate-50/50 dark:bg-slate-900' : 'bg-white dark:bg-slate-900'}`} role="tabpanel" id={`panel-${activeTab}`}>
           <Suspense fallback={
               <div className="flex flex-col items-center justify-center h-[300px] text-slate-400">
                   <Loader2 className="animate-spin mb-4" size={32} />

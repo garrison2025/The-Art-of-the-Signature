@@ -91,13 +91,14 @@ const ScanMode: React.FC<ScanModeProps> = ({ onPreview, onSaveToHistory, onOpenE
                     <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Upload size={32} />
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Upload your signature</h3>
+                    {/* Fixed: Changed h3 to div to avoid invalid ARIA structure inside role="button" */}
+                    <div className="text-xl font-bold text-slate-900 dark:text-white mb-2">Upload your signature</div>
                     <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
                         Take a photo of your signature on white paper. We'll extract it, remove the background, and digitize it instantly.
                     </p>
-                    <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-lg font-bold hover:opacity-90 transition-opacity">
+                    <span className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-lg font-bold hover:opacity-90 transition-opacity inline-block">
                         Choose Image
-                    </button>
+                    </span>
                 </div>
             ) : (
                 // Edit/Preview State
