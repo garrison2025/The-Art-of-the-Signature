@@ -13,28 +13,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- 1. VIP CHANNEL (Critical Fonts): Load immediately (Blocking) 
-         Why: These are visible 'Above the Fold'. We block rendering briefly to ensure 
-         headings (Playfair), UI (Inter), and the DEFAULT signature (Dr Sugiyama) do not shift or flash. -->
+    <!-- CRITICAL FONTS ONLY: Load immediately (Blocking) 
+         We ONLY load the UI font (Inter), Heading font (Playfair), and the DEFAULT signature font (Dr Sugiyama).
+         All other 40+ fonts are now loaded via JavaScript in App.tsx to avoid blocking LCP on mobile. -->
     <link href="https://fonts.googleapis.com/css2?family=Dr+Sugiyama&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-
-    <!-- 2. BACKGROUND CHANNEL (Non-Critical Fonts): Load asynchronously
-         Why: These are the 30+ options in the list. The user won't see them for the first ~2 seconds.
-         Technique: media="print" tells browser "not needed for screen yet", so it downloads in background. 
-         onload="this.media='all'" activates them once downloaded. -->
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Allura&family=Bad+Script&family=Birthstone&family=Birthstone+Bounce&family=Caveat:wght@400..700&family=Cedarville+Cursive&family=Clicker+Script&family=Comforter+Brush&family=Dancing+Script:wght@400..700&family=Dawning+of+a+New+Day&family=Euphoria+Script&family=Explora&family=Gloria+Hallelujah&family=Great+Vibes&family=Herr+Von+Muellerhoff&family=Homemade+Apple&family=Italianno&family=Just+Me+Again+Down+Here&family=Kristi&family=La+Belle+Aurore&family=Marck+Script&family=Meow+Script&family=Monsieur+La+Doulaise&family=Mrs+Saint+Delafield&family=Nanum+Pen+Script&family=Nothing+You+Could+Do&family=Parisienne&family=Petit+Formal+Script&family=Pinyon+Script&family=Qwigley&family=Reenie+Beanie&family=Rochester&family=Rock+Salt&family=Rouge+Script&family=Sacramento&family=Shadows+Into+Light&family=Tangerine:wght@400;700&family=Waiting+for+the+Sunrise&family=WindSong:wght@400;500&family=Yellowtail&family=Zeyada&family=Agbalumo&display=swap" 
-      rel="stylesheet" 
-      media="print" 
-      onload="this.media='all'"
-    >
     
-    <!-- Fallback for users with JS disabled (Ensures fonts still load, just slower) -->
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bad+Script&family=Birthstone&family=Birthstone+Bounce&family=Caveat:wght@400..700&family=Cedarville+Cursive&family=Clicker+Script&family=Comforter+Brush&family=Dancing+Script:wght@400..700&family=Dawning+of+a+New+Day&family=Euphoria+Script&family=Explora&family=Gloria+Hallelujah&family=Great+Vibes&family=Herr+Von+Muellerhoff&family=Homemade+Apple&family=Italianno&family=Just+Me+Again+Down+Here&family=Kristi&family=La+Belle+Aurore&family=Marck+Script&family=Meow+Script&family=Monsieur+La+Doulaise&family=Mrs+Saint+Delafield&family=Nanum+Pen+Script&family=Nothing+You+Could+Do&family=Parisienne&family=Petit+Formal+Script&family=Pinyon+Script&family=Qwigley&family=Reenie+Beanie&family=Rochester&family=Rock+Salt&family=Rouge+Script&family=Sacramento&family=Shadows+Into+Light&family=Tangerine:wght@400;700&family=Waiting+for+the+Sunrise&family=WindSong:wght@400;500&family=Yellowtail&family=Zeyada&family=Agbalumo&display=swap" rel="stylesheet">
-    </noscript>
-
-<script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.3",

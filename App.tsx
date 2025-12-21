@@ -12,6 +12,7 @@ import BlogPost from './components/pages/BlogPost';
 import NotFound from './components/pages/NotFound';
 import StyleLandingPage from './components/pages/StyleLandingPage';
 import OnboardingTour from './components/OnboardingTour';
+import FontLoader from './components/FontLoader';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -47,6 +48,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-slate-200 dark:selection:bg-slate-700 flex flex-col justify-between transition-colors duration-300">
+      <FontLoader />
       <OnboardingTour />
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       
