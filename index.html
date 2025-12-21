@@ -8,10 +8,29 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
-    <!-- Fonts -->
+    
+    <!-- Fonts Optimization: Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bad+Script&family=Birthstone&family=Birthstone+Bounce&family=Caveat:wght@400..700&family=Cedarville+Cursive&family=Clicker+Script&family=Comforter+Brush&family=Dancing+Script:wght@400..700&family=Dawning+of+a+New+Day&family=Dr+Sugiyama&family=Euphoria+Script&family=Explora&family=Gloria+Hallelujah&family=Great+Vibes&family=Herr+Von+Muellerhoff&family=Homemade+Apple&family=Italianno&family=Just+Me+Again+Down+Here&family=Kristi&family=La+Belle+Aurore&family=Marck+Script&family=Meow+Script&family=Monsieur+La+Doulaise&family=Mrs+Saint+Delafield&family=Nanum+Pen+Script&family=Nothing+You+Could+Do&family=Parisienne&family=Petit+Formal+Script&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Qwigley&family=Reenie+Beanie&family=Rochester&family=Rock+Salt&family=Rouge+Script&family=Sacramento&family=Shadows+Into+Light&family=Tangerine:wght@400;700&family=Waiting+for+the+Sunrise&family=WindSong:wght@400;500&family=Yellowtail&family=Zeyada&family=Inter:wght@300;400;500;600&family=Agbalumo&display=swap" rel="stylesheet">
+
+    <!-- 1. CRITICAL FONTS: Load immediately (Blocking) to prevent layout shift on LCP elements 
+         Includes: Inter (UI), Playfair Display (Headings), Dr Sugiyama (Default Signature) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Dr+Sugiyama&display=swap" rel="stylesheet">
+
+    <!-- 2. NON-CRITICAL FONTS: Load asynchronously (Non-blocking) 
+         Technique: Load as 'print' media first (browser doesn't block render), then switch to 'all' on load. -->
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Allura&family=Bad+Script&family=Birthstone&family=Birthstone+Bounce&family=Caveat:wght@400..700&family=Cedarville+Cursive&family=Clicker+Script&family=Comforter+Brush&family=Dancing+Script:wght@400..700&family=Dawning+of+a+New+Day&family=Euphoria+Script&family=Explora&family=Gloria+Hallelujah&family=Great+Vibes&family=Herr+Von+Muellerhoff&family=Homemade+Apple&family=Italianno&family=Just+Me+Again+Down+Here&family=Kristi&family=La+Belle+Aurore&family=Marck+Script&family=Meow+Script&family=Monsieur+La+Doulaise&family=Mrs+Saint+Delafield&family=Nanum+Pen+Script&family=Nothing+You+Could+Do&family=Parisienne&family=Petit+Formal+Script&family=Pinyon+Script&family=Qwigley&family=Reenie+Beanie&family=Rochester&family=Rock+Salt&family=Rouge+Script&family=Sacramento&family=Shadows+Into+Light&family=Tangerine:wght@400;700&family=Waiting+for+the+Sunrise&family=WindSong:wght@400;500&family=Yellowtail&family=Zeyada&family=Agbalumo&display=swap" 
+      rel="stylesheet" 
+      media="print" 
+      onload="this.media='all'"
+    >
+    
+    <!-- Fallback for users with JS disabled -->
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bad+Script&family=Birthstone&family=Birthstone+Bounce&family=Caveat:wght@400..700&family=Cedarville+Cursive&family=Clicker+Script&family=Comforter+Brush&family=Dancing+Script:wght@400..700&family=Dawning+of+a+New+Day&family=Euphoria+Script&family=Explora&family=Gloria+Hallelujah&family=Great+Vibes&family=Herr+Von+Muellerhoff&family=Homemade+Apple&family=Italianno&family=Just+Me+Again+Down+Here&family=Kristi&family=La+Belle+Aurore&family=Marck+Script&family=Meow+Script&family=Monsieur+La+Doulaise&family=Mrs+Saint+Delafield&family=Nanum+Pen+Script&family=Nothing+You+Could+Do&family=Parisienne&family=Petit+Formal+Script&family=Pinyon+Script&family=Qwigley&family=Reenie+Beanie&family=Rochester&family=Rock+Salt&family=Rouge+Script&family=Sacramento&family=Shadows+Into+Light&family=Tangerine:wght@400;700&family=Waiting+for+the+Sunrise&family=WindSong:wght@400;500&family=Yellowtail&family=Zeyada&family=Agbalumo&display=swap" rel="stylesheet">
+    </noscript>
+
 <script type="importmap">
 {
   "imports": {
