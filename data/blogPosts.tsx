@@ -223,7 +223,7 @@ export const BLOG_POSTS: BlogPost[] = [
                     </p>
                 </div>
                 <p className="mb-6">
-                    Under the <a href="https://www.ftc.gov/business-guidance/resources/electronic-signatures-global-national-commerce-act-esign" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">US ESIGN Act of 2000</a> and UETA, an electronic signature is legally binding if it meets four criteria:
+                    Under the <a href="https://www.congress.gov/bill/106th-congress/senate-bill/761" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">US ESIGN Act of 2000</a> and UETA, an electronic signature is legally binding if it meets four criteria:
                 </p>
                 <ol className="list-decimal pl-6 space-y-4 mb-8 text-slate-600 dark:text-slate-300">
                     <li><strong>Intent to Sign:</strong> You must intend to agree to the terms.</li>
@@ -494,7 +494,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
                 <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mt-6 mb-4">Step 2: Insert into Word</h3>
                 <p className="mb-4">
-                    Now that you have your asset, here is <strong>how to add signature in Word</strong> properly, according to the <a href="https://support.microsoft.com/en-us/office/insert-a-signature-f3b3f74c-2355-4d53-be89-30c75ea7e5fc" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">official Microsoft Support guide</a>:
+                    Now that you have your asset, here is <strong>how to add signature in Word</strong> properly, utilizing the standard Insert Picture workflow found in <a href="https://www.microsoft.com/en-us/microsoft-365/word" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Microsoft Word</a>:
                 </p>
                 <ol className="list-decimal pl-6 space-y-4 mb-6 text-slate-600 dark:text-slate-300">
                     <li>Open your document in Microsoft Word.</li>
@@ -517,7 +517,10 @@ export const BLOG_POSTS: BlogPost[] = [
                 <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mt-12 mb-6">Method 2: The "Signature Line" Feature (Digital Certificates)</h2>
 
                 <p className="mb-6">
-                    If you are wondering <strong>how to add signature in Word</strong> that is cryptographically secure (for legal contracts), Microsoft has a built-in feature for this. You can read the official <a href="https://support.microsoft.com/en-us/office/add-or-remove-a-digital-signature-in-office-files-70d26dc9-be10-46f1-8efa-719c8b3f1a2d" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Microsoft Support guide on Digital Signatures</a> for technical details.
+                    If you are wondering <strong>how to add signature in Word</strong> that is cryptographically secure (for legal contracts), you can use the built-in "Signature Line" feature. This is often used in conjunction with third-party digital IDs.
+                </p>
+                <p className="mb-6">
+                   For a deeper understanding of digital signatures, refer to the <a href="https://www.cisa.gov/news-events/news/understanding-digital-signatures" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">CISA (Cybersecurity & Infrastructure Security Agency) guide</a>.
                 </p>
 
                 <p className="mb-6">
@@ -592,7 +595,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mt-12 mb-6">Is Adding a Signature in Word Legally Binding?</h2>
 
                 <p className="mb-6">
-                    Yes, in most cases. According to the <a href="https://www.ftc.gov/business-guidance/resources/electronic-signatures-global-national-commerce-act-esign" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">ESIGN Act</a> (USA) and similar global laws, an electronic signature in Word is legally binding if:
+                    Yes, in most cases. According to the <a href="https://www.congress.gov/bill/106th-congress/senate-bill/761" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">ESIGN Act</a> (USA) and similar global laws, an electronic signature in Word is legally binding if certain conditions are met.
                 </p>
                 <ul className="list-disc pl-6 space-y-2 mb-6 text-slate-600 dark:text-slate-300">
                     <li>You intended to sign.</li>
@@ -600,7 +603,7 @@ export const BLOG_POSTS: BlogPost[] = [
                     <li>The document is preserved.</li>
                 </ul>
                 <p className="mb-6">
-                    However, Word documents are easily editable. For higher security, always <strong>Export to PDF</strong> after adding your signature in Word. For more on PDF security, check <a href="https://www.adobe.com/acrobat/resources/how-to-sign-word-document.html" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Adobe's guide on signing Word docs</a>.
+                    However, Word documents are easily editable. For higher security, always <strong>Export to PDF</strong> after adding your signature in Word. For secure PDF workflows, consider using tools like <a href="https://www.adobe.com/acrobat/online/sign-pdf.html" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Adobe Acrobat</a> which offers robust encryption and identity verification.
                 </p>
 
                 <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mt-12 mb-6">Conclusion</h2>
