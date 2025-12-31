@@ -182,15 +182,12 @@ export const BLOG_POSTS: BlogPost[] = [
                 <p className="lead text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
                     It is December 7, 2025. The world has moved almost entirely paperless. Yet, a fundamental confusion remains in the business world: <strong>What actually counts as a signature?</strong> 
                 </p>
-                
                 <p className="mb-8">
                    You receive a contract via email. Do you print it, sign it with a pen, scan it, and email it back? Do you type your name in CAPS? Do you use a stylus to draw on your iPad? Or do you need a USB token with a cryptographic key?
                 </p>
-
                 <p className="mb-8">
                     The terminology—Electronic Signature (e-signature), Digital Signature, and Wet Ink—is often used interchangeably, but legally and technically, they are vastly different beasts. Using the wrong one could render a contract voidable, while using the most expensive option for a birthday card is overkill.
                 </p>
-
                 <p className="mb-8">
                     In this definitive guide, we will break down the legal landscape of 2025, explain exactly when to use each type, and show you how tools like <Link to="/" className="text-blue-600 dark:text-blue-400 font-bold hover:underline">Handwritten Signature Generator</Link> fit into a legally robust workflow.
                 </p>
@@ -211,7 +208,6 @@ export const BLOG_POSTS: BlogPost[] = [
                     <li><strong>Notarized Documents:</strong> While "Remote Online Notarization" (RON) is exploding, some old-school property deeds still demand paper.</li>
                     <li><strong>Family Law:</strong> Adoption papers or divorce decrees often retain the physical requirement for ceremonial gravity.</li>
                 </ul>
-
                 <p className="mb-6">
                     <strong>The Verdict:</strong> Unless you are getting divorced, buying a house in a rural county, or writing your will, you likely do <strong>not</strong> need wet ink. It is slow, wasteful, and inefficient.
                 </p>
@@ -221,24 +217,20 @@ export const BLOG_POSTS: BlogPost[] = [
                 <p className="mb-6">
                     This is the category where <Link to="/" className="text-blue-600 hover:underline">SignCraft</Link> shines.
                 </p>
-
                 <div className="bg-slate-100 dark:bg-slate-800 p-6 rounded-lg mb-8 border-l-4 border-blue-500">
                     <p className="italic text-slate-600 dark:text-slate-300">
                         <strong>Definition:</strong> An electronic sound, symbol, or process, attached to or logically associated with a contract or other record and executed or adopted by a person with the intent to sign the record.
                     </p>
                 </div>
-
                 <p className="mb-6">
                     Under the <a href="https://www.ftc.gov/business-guidance/resources/electronic-signatures-global-national-commerce-act-esign" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">US ESIGN Act of 2000</a> and UETA, an electronic signature is legally binding if it meets four criteria:
                 </p>
-
                 <ol className="list-decimal pl-6 space-y-4 mb-8 text-slate-600 dark:text-slate-300">
                     <li><strong>Intent to Sign:</strong> You must intend to agree to the terms.</li>
                     <li><strong>Consent to do Business Electronically:</strong> Both parties agree to use digital means.</li>
                     <li><strong>Association of Signature with Record:</strong> The mark (your image) must be clearly attached to the document.</li>
                     <li><strong>Record Retention:</strong> The document must be savable and reproducible.</li>
                 </ol>
-
                 <p className="mb-6">
                     <strong>Common Examples:</strong>
                     <ul className="list-disc pl-6 mt-2">
@@ -247,7 +239,6 @@ export const BLOG_POSTS: BlogPost[] = [
                         <li>Pasting a PNG image of your handwritten signature onto a PDF.</li>
                     </ul>
                 </p>
-
                 <p className="mb-6">
                     <strong>The Role of Visuals:</strong> While typing "JOHN DOE" is legally sufficient, it looks unprofessional and lazy on a contract. This is why professionals use our <Link to="/style/cursive-signature-generator" className="text-blue-600 hover:underline">signature generator</Link>. By creating a unique, styled mark, you demonstrate <em>stronger intent</em> and higher professionalism. It signals, "I didn't just accidentally hit spacebar; I deliberately placed my mark here."
                 </p>
@@ -257,16 +248,13 @@ export const BLOG_POSTS: BlogPost[] = [
                 <p className="mb-6">
                     Here is where people get confused. All digital signatures are electronic signatures, but not all electronic signatures are digital signatures.
                 </p>
-
                 <p className="mb-6">
                     A <strong>Digital Signature</strong> refers to the <em>technology</em> behind the security, not the image on the screen. It uses Public Key Infrastructure (PKI). When you "digitally sign" a document (using a PIV card, a USB token, or a service like Adobe Sign with a verified ID), a mathematical hash is created.
                 </p>
-
                 <ul className="list-disc pl-6 space-y-4 mb-8 text-slate-600 dark:text-slate-300">
                     <li><strong>Tamper Evidence:</strong> If anyone changes a single comma in the PDF after you sign it, the digital seal breaks and alerts the reader.</li>
                     <li><strong>Identity Verification:</strong> A Certificate Authority (CA) vouches that "John Doe is actually John Doe."</li>
                 </ul>
-
                 <p className="mb-6">
                     This is standard for government filings, engineering architectural plans, and high-value corporate mergers.
                 </p>
@@ -296,7 +284,6 @@ export const BLOG_POSTS: BlogPost[] = [
                     <li>Select "Upload Image" or "Draw" in their signature setup.</li>
                     <li>Upload the high-quality PNG you created in Step 1.</li>
                 </ul>
-
                 <p className="mb-6">
                     <strong>The Result:</strong> You get the cryptographic security and audit trail of the platform, but the document bears <em>your</em> unique, personal, handwritten aesthetic. It is the ultimate combination of style and substance.
                 </p>
@@ -344,15 +331,12 @@ export const BLOG_POSTS: BlogPost[] = [
                 <p className="lead text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
                     The average professional sends 40 emails a day. That is 200 emails a week, or roughly 10,000 emails a year.
                 </p>
-                
                 <p className="mb-8">
                     Each one of those emails is a marketing opportunity. Yet, most people treat their email signature as an afterthought. They type "-- Thanks, John" and leave it at that. Or worse, they attach a gigantic, blurry JPEG of their entire business card that doesn't load on iPhones and gets blocked by spam filters.
                 </p>
-
                 <p className="mb-8">
                     In 2025, your email signature is your digital business card, your personal branding billboard, and a trust signal all rolled into one. A well-designed signature can drive traffic to your website, increase LinkedIn connections, and make you look like an industry leader.
                 </p>
-
                 <p className="mb-8">
                     In this guide, we'll dissect the anatomy of the perfect email signature and show you how to build one for free using <Link to="/" className="text-blue-600 dark:text-blue-400 font-bold hover:underline">SignCraft's Email Signature Builder</Link>.
                 </p>
@@ -510,7 +494,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
                 <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mt-6 mb-4">Step 2: Insert into Word</h3>
                 <p className="mb-4">
-                    Now that you have your asset, here is <strong>how to add signature in Word</strong> properly:
+                    Now that you have your asset, here is <strong>how to add signature in Word</strong> properly, according to the <a href="https://support.microsoft.com/en-us/office/insert-a-signature-f3b3f74c-2355-4d53-be89-30c75ea7e5fc" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">official Microsoft Support guide</a>:
                 </p>
                 <ol className="list-decimal pl-6 space-y-4 mb-6 text-slate-600 dark:text-slate-300">
                     <li>Open your document in Microsoft Word.</li>
@@ -533,7 +517,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mt-12 mb-6">Method 2: The "Signature Line" Feature (Digital Certificates)</h2>
 
                 <p className="mb-6">
-                    If you are wondering <strong>how to add signature in Word</strong> that is cryptographically secure (for legal contracts), Microsoft has a built-in feature for this.
+                    If you are wondering <strong>how to add signature in Word</strong> that is cryptographically secure (for legal contracts), Microsoft has a built-in feature for this. You can read the official <a href="https://support.microsoft.com/en-us/office/add-or-remove-a-digital-signature-in-office-files-70d26dc9-be10-46f1-8efa-719c8b3f1a2d" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Microsoft Support guide on Digital Signatures</a> for technical details.
                 </p>
 
                 <p className="mb-6">
@@ -608,7 +592,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mt-12 mb-6">Is Adding a Signature in Word Legally Binding?</h2>
 
                 <p className="mb-6">
-                    Yes, in most cases. According to the <a href="https://www.investopedia.com/terms/e/electronic-signatures-in-global-and-national-commerce-act-e-sign.html" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">ESIGN Act</a> (USA) and similar global laws, an electronic signature in Word is legally binding if:
+                    Yes, in most cases. According to the <a href="https://www.ftc.gov/business-guidance/resources/electronic-signatures-global-national-commerce-act-esign" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">ESIGN Act</a> (USA) and similar global laws, an electronic signature in Word is legally binding if:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 mb-6 text-slate-600 dark:text-slate-300">
                     <li>You intended to sign.</li>
@@ -616,7 +600,7 @@ export const BLOG_POSTS: BlogPost[] = [
                     <li>The document is preserved.</li>
                 </ul>
                 <p className="mb-6">
-                    However, Word documents are easily editable. For higher security, always <strong>Export to PDF</strong> after adding your signature in Word. This freezes the content so it cannot be easily altered by the recipient.
+                    However, Word documents are easily editable. For higher security, always <strong>Export to PDF</strong> after adding your signature in Word. For more on PDF security, check <a href="https://www.adobe.com/acrobat/resources/how-to-sign-word-document.html" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Adobe's guide on signing Word docs</a>.
                 </p>
 
                 <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mt-12 mb-6">Conclusion</h2>
