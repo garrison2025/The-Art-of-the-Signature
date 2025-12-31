@@ -711,7 +711,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 </p>
 
                 <p className="mb-6">
-                    According to <a href="https://support.microsoft.com/en-us/office/insert-a-signature-f3b3f74c-2355-4d53-be89-30c75ea7e5fc" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Microsoft Support</a>, this feature allows you to specify the signer's intention and prevents further editing of the document.
+                    According to the official <a href="https://www.microsoft.com/en-us/microsoft-365/word" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Microsoft Word product page</a>, these features are integral to the Office 365 ecosystem for securing document integrity.
                 </p>
 
                 <ol className="list-decimal pl-6 space-y-4 mb-6 text-slate-600 dark:text-slate-300">
@@ -761,11 +761,11 @@ export const BLOG_POSTS: BlogPost[] = [
                 </p>
 
                 <p className="mb-6">
-                    Generally, yes. Under the <a href="https://www.usa.gov/electronic-signature" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">ESIGN Act</a>, an electronic signature is valid if intent and consent are present. However, Word documents are editable.
+                    Generally, yes. Under the <a href="https://www.congress.gov/bill/106th-congress/senate-bill/761" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">US ESIGN Act of 2000 (Congress.gov)</a>, an electronic signature is valid if intent and consent are present. However, Word documents are editable.
                 </p>
 
                 <p className="mb-6">
-                    <strong>Security Tip:</strong> After you figure out <strong>how to insert a signature in Word</strong>, always export the file to PDF before sending it. This locks the visual elements in place. For high-stakes contracts, use a service like <a href="https://www.docusign.com/how-it-works/electronic-signature/sign-documents-online" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">DocuSign</a> or <a href="https://www.adobe.com/acrobat/resources/how-to-sign-word-document.html" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Adobe Acrobat</a> which offers cryptographic verification.
+                    <strong>Security Tip:</strong> After you figure out <strong>how to insert a signature in Word</strong>, always export the file to PDF before sending it. This locks the visual elements in place. For high-stakes contracts, use a service like <a href="https://www.docusign.com" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">DocuSign</a> or <a href="https://www.adobe.com/acrobat/online/sign-pdf.html" target="_blank" rel="nofollow noopener" className="text-blue-600 hover:underline">Adobe Acrobat Online</a> which offers cryptographic verification.
                 </p>
 
                 <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mt-12 mb-6">Conclusion</h2>
