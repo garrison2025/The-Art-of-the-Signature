@@ -7,7 +7,8 @@ import { fileURLToPath } from 'url';
 const blogSlugs = [
     'professional-handwritten-signature-guide-2025',
     'electronic-vs-digital-signatures-legal-guide-2025',
-    'how-to-design-perfect-email-signature-2025'
+    'how-to-design-perfect-email-signature-2025',
+    'how-to-add-signature-in-word'
 ];
 
 const baseUrl = 'https://handwrittensignaturegenerator.org';
