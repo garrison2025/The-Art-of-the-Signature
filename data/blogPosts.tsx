@@ -847,7 +847,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <ul className="list-disc pl-6 space-y-2 mb-6 text-slate-600 dark:text-slate-300">
                     <li>Open your Word document.</li>
                     <li>Navigate to the <strong>Insert</strong> tab on the ribbon.</li>
-                    <li>Click <strong>Pictures</strong> -> <strong>This Device</strong>.</li>
+                    <li>Click <strong>Pictures</strong> &rarr; <strong>This Device</strong>.</li>
                     <li>Select the PNG file you just downloaded.</li>
                 </ul>
 
@@ -888,7 +888,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 </p>
 
                 <ul className="list-disc pl-6 space-y-2 mb-6 text-slate-600 dark:text-slate-300">
-                    <li>Click the <strong>Draw</strong> tab in the top ribbon. (If missing, right-click the ribbon -> Customize -> Check "Draw").</li>
+                    <li>Click the <strong>Draw</strong> tab in the top ribbon. (If missing, right-click the ribbon &rarr; Customize &rarr; Check "Draw").</li>
                     <li>Select a pen tool (Black or Blue ink).</li>
                     <li>Sign directly on the screen.</li>
                     <li>The ink becomes a vector object that you can resize and move, similar to an image.</li>
@@ -903,7 +903,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <ol className="list-decimal pl-6 space-y-4 mb-6 text-slate-600 dark:text-slate-300">
                     <li>Follow Method 1 to insert and position your signature perfecty.</li>
                     <li>Select the image.</li>
-                    <li>Go to <strong>Insert</strong> -> <strong>Quick Parts</strong> -> <strong>Save Selection to Quick Part Gallery</strong>.</li>
+                    <li>Go to <strong>Insert</strong> &rarr; <strong>Quick Parts</strong> &rarr; <strong>Save Selection to Quick Part Gallery</strong>.</li>
                     <li>Name it something short, like "MySig".</li>
                     <li><strong>The Magic:</strong> In any future document, just type "MySig" and press <strong>F3</strong>. Your signature will appear instantly in the correct spot!</li>
                 </ol>
@@ -938,7 +938,7 @@ export const BLOG_POSTS: BlogPost[] = [
                     <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
                         <h4 className="font-bold text-slate-900 dark:text-white mb-2">Q: How to add a signature to a word document on mobile?</h4>
                         <p className="text-slate-600 dark:text-slate-300 text-sm">
-                            The Word mobile app has a specific "Insert" menu. Save your signature PNG to your phone's camera roll, then tap Insert -> Pictures.
+                            The Word mobile app has a specific "Insert" menu. Save your signature PNG to your phone's camera roll, then tap Insert &rarr; Pictures.
                         </p>
                     </div>
                     <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
