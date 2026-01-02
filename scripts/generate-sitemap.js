@@ -10,7 +10,8 @@ const blogSlugs = [
     'how-to-design-perfect-email-signature-2025',
     'how-to-add-signature-in-word',
     'how-to-insert-signature-in-word',
-    'how-to-add-a-signature-to-a-word-document'
+    'how-to-add-a-signature-to-a-word-document',
+    'attach-signature-to-word'
 ];
 
 const baseUrl = 'https://handwrittensignaturegenerator.org';
