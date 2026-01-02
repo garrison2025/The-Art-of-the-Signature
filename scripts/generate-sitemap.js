@@ -11,8 +11,7 @@ const blogSlugs = [
     'how-to-add-signature-in-word',
     'how-to-insert-signature-in-word',
     'how-to-add-a-signature-to-a-word-document',
-    'attach-signature-to-word',
-    'can-you-change-your-signature'
+    'attach-signature-to-word'
 ];
 
 const baseUrl = 'https://handwrittensignaturegenerator.org';
