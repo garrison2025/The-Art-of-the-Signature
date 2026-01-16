@@ -10,22 +10,65 @@ import SEO from '../SEO';
 const SignatureGenerator = React.lazy(() => import('../SignatureGenerator'));
 
 const Home: React.FC = () => {
+  // Enhanced Schema with @graph to include both SoftwareApplication and HowTo
   const schema = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SignCraft Handwritten Signature Generator",
-    "applicationCategory": "DesignApplication",
-    "operatingSystem": "Web Browser",
-    "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-    },
-    "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "1250"
-    }
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "SignCraft Handwritten Signature Generator",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web Browser",
+        "url": "https://handwrittensignaturegenerator.org",
+        "image": "https://handwrittensignaturegenerator.org/icon-512.png",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "1250"
+        }
+      },
+      {
+        "@type": "HowTo",
+        "name": "How to Create a Handwritten Signature Online",
+        "description": "Create a professional, transparent digital handwritten signature in 3 simple steps using SignCraft.",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://handwrittensignaturegenerator.org/icon-512.png",
+            "height": "512",
+            "width": "512"
+        },
+        "estimatedCost": {
+            "@type": "MonetaryAmount",
+            "currency": "USD",
+            "value": "0"
+        },
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Enter Your Name",
+            "text": "Type your name into the generator input field. The tool will instantly render it in multiple handwritten font styles.",
+            "url": "https://handwrittensignaturegenerator.org/#input-area"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Customize Your Style",
+            "text": "Choose your preferred font style (e.g., Cursive, Calligraphy). Adjust the slant, weight, and color, and toggle 'Ink Texture' for realism.",
+            "url": "https://handwrittensignaturegenerator.org/#generator-tabs"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Download Signature",
+            "text": "Click the 'PNG' button to download your high-resolution signature with a transparent background, ready for documents.",
+            "url": "https://handwrittensignaturegenerator.org/#history-section"
+          }
+        ]
+      }
+    ]
   };
 
   const styles = [

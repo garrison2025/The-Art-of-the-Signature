@@ -2,7 +2,17 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { HelpCircle } from 'lucide-react';
 
-const faqData = [
+export interface FAQItem {
+    question: string;
+    answer: string;
+}
+
+interface FAQProps {
+    customItems?: FAQItem[];
+    title?: string;
+}
+
+const DEFAULT_FAQ: FAQItem[] = [
     {
         question: "Is this signature generator free?",
         answer: "Yes, our **handwritten signature generator** is 100% free to use. You can create, customize, and download unlimited high-resolution handwritten signatures without creating an account or paying any fees."
@@ -21,11 +31,13 @@ const faqData = [
     }
 ];
 
-const FAQ: React.FC = () => {
+const FAQ: React.FC<FAQProps> = ({ customItems, title = "Frequently Asked Questions" }) => {
+    const data = customItems || DEFAULT_FAQ;
+
     const schema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        "mainEntity": faqData.map(item => ({
+        "mainEntity": data.map(item => ({
             "@type": "Question",
             "name": item.question,
             "acceptedAnswer": {
@@ -45,12 +57,12 @@ const FAQ: React.FC = () => {
                      <span className="inline-flex items-center justify-center p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl mb-4">
                         <HelpCircle size={24} />
                      </span>
-                    <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+                    <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-4">{title}</h2>
                     <p className="text-slate-500 dark:text-slate-400">Common questions about our **handwritten signature generator**.</p>
                 </div>
 
                 <div className="space-y-6">
-                    {faqData.map((item, index) => (
+                    {data.map((item, index) => (
                         <div key={index} className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6 border border-gray-100 dark:border-slate-700">
                             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{item.question}</h3>
                             <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
