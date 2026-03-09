@@ -1,16 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { BlogPost } from '../types';
+import blogMetadata from './blog-metadata.json';
 
-export const BLOG_POSTS: BlogPost[] = [
+const rawPosts = [
     {
         id: '1',
-        slug: 'professional-handwritten-signature-guide-2025',
-        title: 'The Art of the Digital Mark: Why Your Personal Brand Needs a Professional Handwritten Signature in 2025',
-        excerpt: 'In an era of automated text and sterile Helvetica, a personalized handwritten signature is the ultimate power move. Learn how to create one for free, understand the psychology behind it, and master the digital tools to implement it securely.',
-        date: 'December 21, 2025',
-        readTime: '12 min read',
-        coverImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2000&auto=format&fit=crop', // Fountain pen on paper
         content: (
             <>
                 <p className="lead text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
@@ -171,12 +166,6 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         id: '2',
-        slug: 'electronic-vs-digital-signatures-legal-guide-2025',
-        title: 'Electronic vs. Digital vs. Wet Ink Signatures: The Definitive 2025 Guide',
-        excerpt: 'Confused by ESIGN, eIDAS, and cryptographic certificates? This guide demystifies the legal landscape of signatures in 2025. Learn when you can simply use an image, when you need a digital certificate, and how to combine them for the perfect workflow.',
-        date: 'December 7, 2025',
-        readTime: '15 min read',
-        coverImage: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2000&auto=format&fit=crop', // Business contract
         content: (
             <>
                 <p className="lead text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
@@ -292,12 +281,6 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         id: '3',
-        slug: 'how-to-design-perfect-email-signature-2025',
-        title: 'How to Design the Perfect Email Signature in 2025 (Templates & Best Practices)',
-        excerpt: 'Your email signature is the most undervalued digital real estate you own. Stop using plain text or messy images. This guide covers the anatomy of a high-converting signature, mobile responsiveness, and how to use our free builder.',
-        date: 'December 7, 2025',
-        readTime: '10 min read',
-        coverImage: 'https://images.unsplash.com/photo-1596524430615-b46475ddff6e?q=80&w=2000&auto=format&fit=crop', // Minimalist workspace laptop
         content: (
             <>
                 <p className="lead text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
@@ -414,12 +397,6 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         id: '4',
-        slug: 'how-to-add-signature-in-word',
-        title: 'How to Add Signature in Word? (The 2026 Professional Guide)',
-        excerpt: 'Stop printing and scanning! Learn the 4 best methods on how to add a signature in Word in 2026. From professional PNG insertion to digital certificates, we cover everything you need to know for signing documents electronically.',
-        date: 'January 1, 2026',
-        readTime: '18 min read',
-        coverImage: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=2000&auto=format&fit=crop', // Professional workspace with laptop
         content: (
             <>
                 <p className="lead text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
@@ -592,12 +569,6 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         id: '5',
-        slug: 'how-to-insert-signature-in-word',
-        title: 'How to Insert a Signature in Word? (The Ultimate 2026 Tutorial)',
-        excerpt: 'Looking for a step-by-step guide on how to insert a signature in Word? Discover the 4 most effective methods for 2026, including transparent images, digital lines, and drawing tools, to make your documents legally binding and professional.',
-        date: 'January 1, 2026',
-        readTime: '20 min read',
-        coverImage: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2000&auto=format&fit=crop', // Signing a document on a desk
         content: (
             <>
                 <p className="lead text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
@@ -710,12 +681,6 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         id: '6',
-        slug: 'how-to-add-a-signature-to-a-word-document',
-        title: 'How to Add a Signature to a Word Document? (The 2026 Master Guide)',
-        excerpt: 'Navigating the new features of Word 2026? Learn the definitive methods for adding a professional signature to your documents. From dragging transparent PNGs to using the advanced Draw tab, we cover every technique to make your paperwork official.',
-        date: 'January 1, 2026',
-        readTime: '22 min read',
-        coverImage: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2000&auto=format&fit=crop', // Signing paperwork close up
         content: (
             <>
                 <p className="lead text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
@@ -941,3 +906,11 @@ export const BLOG_POSTS: BlogPost[] = [
         )
     }
 ];
+
+export const BLOG_POSTS: BlogPost[] = blogMetadata.map(meta => {
+    const postContent = rawPosts.find(p => p.id === meta.id)?.content;
+    return {
+        ...meta,
+        content: postContent || <></>
+    };
+});

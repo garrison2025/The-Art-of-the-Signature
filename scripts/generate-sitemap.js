@@ -2,18 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Simple mock of blog posts if we can't import the TS file directly in this JS script
-// Ideally, we would read the JSON/data source, but since it's a small app, we duplicate the slugs for the sitemap generator.
-const blogSlugs = [
-    'professional-handwritten-signature-guide-2025',
-    'electronic-vs-digital-signatures-legal-guide-2025',
-    'how-to-design-perfect-email-signature-2025',
-    'how-to-add-signature-in-word',
-    'how-to-insert-signature-in-word',
-    'how-to-add-a-signature-to-a-word-document',
-    'attach-signature-to-word',
-    'ways-to-attach-signature-to-word'
-];
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Read metadata dynamically
+const blogMetadata = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/blog-metadata.json'), 'utf-8'));
+const styleMetadata = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/style-metadata.json'), 'utf-8'));
+
+const blogSlugs = blogMetadata.map(post => post.slug);
+const styleSlugs = Object.keys(styleMetadata).map(slug => `style/${slug}`);
 
 const baseUrl = 'https://handwrittensignaturegenerator.org';
 
@@ -23,7 +19,8 @@ const staticPages = [
     '/contact',
     '/blog',
     '/privacy',
-    '/terms'
+    '/terms',
+    ...styleSlugs.map(slug => `/${slug}`)
 ];
 
 const generateSitemap = () => {
